@@ -28,14 +28,18 @@ class GenderGenerator:
         return f"{gender:>6s}"
 
 class BirthdateGenerator:
+    def __init__(self):
+        self.year = None
+        self.month = None
+        self.day = None
     def generate_birthdate(self):
         month_days = [31,28,31,30,31,30,31,31,30,31,30,31]
-        year = random.randint(1960, 2022)
-        month = random.choice([_ for _ in range(1,13)])
-        day = random.randint(1, month_days[month-1] + 1)
-        return f"{year}-{month:02d}-{day:02d}"
+        self.year = random.randint(1960, 2022)
+        self.month = random.choice([_ for _ in range(1,13)])
+        self.day = random.randint(1, month_days[self.month-1] + 1)
+        return f"{self.year}-{self.month:02d}-{self.day:02d}"
         
-class YearGenerator:
+class AgeGenerator:
     yearNow = 2023
     def generate_age(self, birthyear):
         return self.yearNow - birthyear + 1
@@ -65,6 +69,7 @@ class DataGenerator:
         self.name_gen = NameGenerator(sung_file, irum_file)
         self.birthday_gen = BirthdateGenerator()
         self.gender_gen = GenderGenerator()
+        self.age_gen = AgeGenerator()
         self.address_gen = Address_Generator(si_file, gu_file)
 
     def generate_data(self, count):
@@ -74,6 +79,7 @@ class DataGenerator:
             name = self.name_gen.generate_name()
             birthday = self.birthday_gen.generate_birthdate()
             gender = self.gender_gen.generate_gender()
+            age = self.age_gen.generate_age(self.birthday_gen.year)
             address =self.address_gen.generate_address()
             data.append((id, name, birthday, gender, address))
         return data
