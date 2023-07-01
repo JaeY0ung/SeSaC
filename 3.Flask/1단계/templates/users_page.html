@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table{
+            border-collapse: collapse; 
+            width: 80%;
+        }
+        th,td{
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th{
+            background-color: #f2f2f2;
+        }
+        nav{
+            width: 80%;
+        }
+    </style>
+    <title>My Flask</title>
+</head>
+
+<body>
+    <nav> 
+        <a href="/users">User</a>
+        <a href="/orders">Order</a>
+        <a href="/orderitems">Order Item</a>
+        <a href="/items">Item</a>
+        <a href="/stores">Store</a>
+    </nav>
+    <!-- 사용자 검색 버튼 -->
+    <form action="/users?search_user={{ search_user }}" method="get">
+        <input type="text" name="search_user">
+        <input type="submit">
+    </form>
+    <table border = "1">
+
+    {% for header in headers %}
+        <th>{{ header }}</th>
+    {% endfor %}
+    <!-- 사용자 id 클릭시 이동 버튼 -->
+    {% for i in range(users | length) %}
+        <tr>
+        {% for j in range(users[i] | length) %}
+            {% if j==0 %}
+                <td><a href="/users?id={{ users[i][0] }}">{{ users[i][0] }}</a></td>
+            {% else %}
+                <td>{{ users[i][j] }}</td>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+
+    {% if page <= 3 %}
+        {% for p in range(start_page, end_page+1) %}
+            <button type="button" class="navyBtn", onclick="location.href='/users?page={{ p }}'">{{ p }}</button>
+        {% endfor %}
+        <button type="button" class="navyBtn", onclick="location.href='/users?page={{ page+5 }}'">></button>
+
+    {% elif page <= 5 %}
+        <button type="button" class="navyBtn", onclick="location.href='/users?page={{ 1 }}'"><</button>
+        {% for p in range(start_page, end_page+1) %}
+            <button type="button" class="navyBtn", onclick="location.href='/users?page={{ p }}'">{{ p }}</button>
+        {% endfor %}
+        <button type="button" class="navyBtn", onclick="location.href='/users?page={{ page+5 }}'">></button>
+
+    {% elif page <= total_page - 6 %}
+        <button type="button" class="navyBtn", onclick="location.href='/users?page={{ page-5 }}'"><</button>
+        {% for p in range(start_page, end_page+1) %}
+            <button type="button" class="navyBtn", onclick="location.href='/users?page={{ p }}'">{{ p }}</button>
+        {% endfor %}
+        <button type="button" class="navyBtn", onclick="location.href='/users?page={{ page+5 }}'">></button>
+
+    {% elif page <= total_page - 3 %}
+        <button type="button" class="navyBtn", onclick="location.href='/users?page={{ page-5 }}'"><</button>
+        {% for p in range(start_page, end_page+1) %}
+            <button type="button" class="navyBtn", onclick="location.href='/users?page={{ p }}'">{{ p }}</button>
+        {% endfor %}
+        <button type="button" class="navyBtn", onclick="location.href='/users?page={{ total_page }}'">></button>
+    
+    {% else %}
+        <button type="button" class="navyBtn", onclick="location.href='/users?page={{ page-5 }}'"><</button>
+        {% for p in range(start_page, end_page+1) %}
+            <button type="button" class="navyBtn", onclick="location.href='/users?page={{ p }}'">{{ p }}</button>
+        {% endfor %}
+
+    {% endif %}
+</body>
+</html>

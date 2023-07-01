@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask</title>
+</head>
+
+<body>
+    <h1>This is My Flask Homepage</h1>
+    <table border = "1">
+    {% for header in headers %}
+        <th>{{ header }}</th>
+    {% endfor %}
+
+    {% for i in range(userdata | length) %}
+        <tr>
+        {% for j in range(userdata[i] | length) %}
+            <td>{{ userdata[i][j] }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+
+    </table>
+</body>
+</html>

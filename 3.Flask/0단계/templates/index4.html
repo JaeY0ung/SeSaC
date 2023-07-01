@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table{
+            border-collapse: collapse;
+            width: 80%;
+        }
+        th,td{
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th{
+            background-color: #f2f2f2;
+        }
+    </style>
+    <title>마이 플라스크</title>
+</head>
+<body>
+    <h1>마이 플라스크 홈페이지 입니다</h1>
+
+    <table border = "1">
+    {% for type in userdatatype %}
+        <th>{{ type }}</th>
+    {% endfor %}
+
+    {% for i in range(users | length) %}
+        <form action='/user/{{ users[i][1] }}' method="post">
+            <input type="hidden" name="userdata" value="{{ users[i] }}">
+        <tr>
+        {% for j in range(users[i] | length) %}
+            {% if j==0 %}
+                <td><a href="/user/{{ users[i][1] }}">{{users[i][0]}} 정보</a></td>
+            {% else %}
+                <td>{{ users[i][j] }}</td>
+            {% endif %}
+        {% endfor %}
+        </tr>
+        </form> 
+    {% endfor %}
+
+    </table>
+
+</body>
+</html>

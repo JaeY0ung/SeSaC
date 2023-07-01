@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>마이 플라스크</title>
+</head>
+
+<body>
+    <h1>마이 플라스크 홈페이지 입니다</h1>
+    <table border = "1">
+    <th>이름</th>
+    <th>나이</th>
+    <th>번호</th>
+    {% for user in username %}
+    <tr>
+        <td>{{ user['name'] }}</td>
+        <td>{{ user['age'] }}</td>
+        <td>{{ user['phone'] }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My First Web Page</title>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+</body>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photo Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #calendar {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #calendar th,
+        #calendar td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+				#calendar th {
+            background-color: #f2f2f2;
+        }
+
+        #calendar td img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Photo Calendar</h1>
+    <img src="path/to/photo.jpg" alt="Photo" width="300" height="200">
+
+    <table id="calendar">
+        <thead>
+            <tr>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+            </tr>
+        </thead>
+				<tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>1</td>
+                <td>2</td>
+            </tr>
+            <!-- Add more rows for the remaining days -->
+        </tbody>
+    </table>
+</body>
+</html>
