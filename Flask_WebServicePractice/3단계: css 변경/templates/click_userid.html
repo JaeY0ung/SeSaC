@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        table{
+            border-collapse: collapse; 
+            width: 100%;
+            color: rgb(39, 153, 229);
+            text-decoration-line: none;
+        }
+        th,td{
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th{
+            background-color: #f2f2f2;
+            color: rgb(0, 0, 0);
+            
+        }
+        nav{
+            width: 100%;
+            color: rgb(39, 153, 229);
+            display: flex;
+            list-style: none;
+        }
+    </style>
+    <title>{{ username }}의 Flask</title>
+</head>
+
+<body>
+    <h1>{{ username }}의 정보</h1>
+    <table border = "1">
+    {% for header in headers %}
+        <th>{{ header }}</th>
+    {% endfor %}
+
+    {% for i in range(userdata | length) %}
+        <tr>
+        {% for j in range(userdata[i] | length) %}
+            <td>{{ userdata[i][j] }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+    <button type="button" class="navyBtn", onclick="location.href='/users?search_user={{ search_user }}&page={{ page }}'">뒤로 가기</button>
+</body>
+</html>

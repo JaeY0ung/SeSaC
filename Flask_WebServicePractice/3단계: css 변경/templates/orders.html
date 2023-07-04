@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        table{
+            border-collapse: collapse; 
+            width: 100%;
+            color: rgb(39, 153, 229);
+            text-decoration-line: none;
+        }
+        th,td{
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th{
+            background-color: #f2f2f2;
+            color: rgb(0, 0, 0);
+            
+        }
+        nav{
+            width: 100%;
+            color: rgb(39, 153, 229);
+            display: flex;
+            list-style: none;
+        }
+        .menu_item>a{
+            float: left;
+            margin-right: 20px;
+        }
+        a{
+            text-decoration-line: none;
+            color: rgb(39, 153, 229);
+        }
+        .pagechange{
+            text-align: center;
+            display:inline-block;
+        }
+
+    </style>
+    <title>My Flask</title>
+</head>
+
+<body>
+    <nav> 
+        <ul class="nav_menu menu_item">
+            <a href="/users">User</a>
+            <a href="/orders">Order</a>
+            <a href="/orderitems">Order Item</a>
+            <a href="/items">Item</a>
+            <a href="/stores">Store</a>
+        </ul>
+    </nav>
+
+    <!-- 사용자 검색 버튼 -->
+    <!-- form 안에 있는 것은 마지막 상태로 넘어간다! -->
+    <form action="/orders?search_order={{ search_order }}&page={{ page }}" method="get">
+        <input type="text" name="search_order" value="{{ search_order }}" >
+        <input type="submit">
+    </form>
+    <table border = "1">
+
+    {% for header in headers %}
+        <th>{{ header }}</th>
+    {% endfor %}
+    <!-- 사용자 id 클릭시 이동 버튼 -->
+    {% for i in range(orders | length) %}
+        <tr>
+        {% for j in range(orders[i] | length) %}
+            {% if j==0 %}
+                <td><a href="/orders?id={{ orders[i][0] }}&search_order={{ search_order }}&page={{ page }}">{{ orders[i][0] }}</a></td>
+            {% else %}
+                <td>{{ orders[i][j] }}</td>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+
+    <nav class="pagechange">
+        {% if page <= 3 %}
+            {% for p in range(start_page, end_page+1) %}
+                <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ p }}'">{{ p }}</button>
+            {% endfor %}
+            <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ page+5 }}'">></button>
+
+        {% elif page <= 5 %}
+            <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ 1 }}'"><</button>
+            {% for p in range(start_page, end_page+1) %}
+                <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ p }}'">{{ p }}</button>
+            {% endfor %}
+            <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ page+5 }}'">></button>
+
+        {% elif page <= total_page - 6 %}
+            <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ page-5 }}'"><</button>
+            {% for p in range(start_page, end_page+1) %}
+                <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ p }}'">{{ p }}</button>
+            {% endfor %}
+            <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ page+5 }}'">></button>
+
+        {% elif page <= total_page - 3 %}
+            <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ page-5 }}'"><</button>
+            {% for p in range(start_page, end_page+1) %}
+                <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ p }}'">{{ p }}</button>
+            {% endfor %}
+            <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ total_page }}'">></button>
+        
+        {% else %}
+            <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ page-5 }}'"><</button>
+            {% for p in range(start_page, end_page+1) %}
+                <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ p }}'">{{ p }}</button>
+            {% endfor %}
+        {% endif %}
+    </nav>
+</body>
+</html>
