@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>주문아이템</title>
+    <title>주문한 물품</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -24,13 +24,11 @@
           </div>
         </div>
       </nav>
-    <!-- 사용자 검색 버튼 -->
-    <!-- form 안에 있는 것은 마지막 상태로 넘어간다! -->
-    <form action="/orderitems?search_orderitem={{ search_orderitem }}&page={{ page }}" method="get">
+    <!-- 사용자 검색 버튼 form 안에 있는 것은 마지막 상태로 넘어간다!-->
+    <form method="get">
         <input type="text" name="search_orderitem" value="{{ search_orderitem }}" >
-        <input type="submit">
+        <input type="submit" value="이동">
     </form>
-
     <table class="table table-striped">
     {% for header in headers %}
         <th>{{ header }}</th>
@@ -50,44 +48,28 @@
     </table>
 
     <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            {% if page <= 3 %}
-                {% for p in range(start_page, end_page+1) %}
-                    <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ p }}'">{{ p }}</a></li>
-                {% endfor %}
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page+5 }}'"><span aria-hidden="true">&raquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ total_page }}'"><span aria-hidden="true">&raquo;&raquo;</span></a></li>
-
-            {% elif page <= 5 %}
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ 1 }}'"><span aria-hidden="true">&laquo;</span></a></li>
-                {% for p in range(start_page, end_page+1) %}
-                    <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ p }}'">{{ p }}</a></li>
-                {% endfor %}
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page+5 }}'"><span aria-hidden="true">&raquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ total_page }}'"><span aria-hidden="true">&raquo;&raquo;</span></a></li>
-
-            {% elif page <= total_page - 6 %}
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page-5 }}'"><span aria-hidden="true">&laquo;</span></a></li>
-                {% for p in range(start_page, end_page+1) %}
-                    <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ p }}'">{{ p }}</a></li>
-                {% endfor %}
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page+5 }}'"><span aria-hidden="true">&raquo;</span></a></li>
-
-            {% elif page <= total_page - 3 %}
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ 1 }}'"><span aria-hidden="true">&laquo;&laquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page-5 }}'"><span aria-hidden="true">&laquo;</span></a></li>
-                {% for p in range(start_page, end_page+1) %}
-                    <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ p }}'">{{ p }}</a></li>
-                {% endfor %}
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ total_page }}'"><span aria-hidden="true">&raquo;</span></a></li>
-            
-            {% else %}
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ 1 }}'"><span aria-hidden="true">&laquo;&laquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page-5 }}'"><span aria-hidden="true">&laquo;</span></a></li>
-                {% for p in range(start_page, end_page+1) %}
-                    <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ p }}'">{{ p }}</a></li>
-                {% endfor %}
+        <ul class="pagination" style="justify-content : center;">
+            {% if move_page_front %}
+                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ 1 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page-5 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&laquo;</span></a></li>
             {% endif %}
+            {% for p in range(pagination_start, pagination_end+1) %}
+                
+                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ p }}&choice_gender={{ choice_gender }}'>
+                    {% if page == p %}
+                        <strong><mark >
+                    {% endif %}
+                    {{ p }}
+                    {% if page == p %}
+                        </strong></mark>
+                    {% endif %}
+                </a></li>
+            {% endfor %}
+            {% if move_page_back %}
+                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page+5 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&raquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ total_page }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
+            {% endif %}
+        </ul>
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
