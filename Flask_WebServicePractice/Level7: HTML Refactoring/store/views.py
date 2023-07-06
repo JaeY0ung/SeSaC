@@ -28,8 +28,16 @@ def stores_info():
                                page = page, search_store=search_store)
     
     pagemaker = Pagination()
-    start_index, end_index, total_page, pagination_start, pagination_end, move_page_front, move_page_back = pagemaker.makepagination(stores, page)
-    
+    pagemaker.makepagination(stores, page)
+
+    start_index = pagemaker.start_index
+    end_index = pagemaker.end_index
+    total_page = pagemaker.total_page
+    pagination_start = pagemaker.pagination_start
+    pagination_end = pagemaker.pagination_end
+    move_page_front = pagemaker.move_page_back
+    move_page_back = pagemaker.move_page_back
+
     return render_template("stores.html", headers=headers, stores=stores[start_index : end_index + 1], 
                            page=page, total_page=total_page, 
                            pagination_start=pagination_start, pagination_end=pagination_end,
