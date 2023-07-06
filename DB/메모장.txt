@@ -1,0 +1,77 @@
+.tables
+----------------------------------------------------------
+SELECT * FROM people WHERE first_name LIKE 'first%';
+
+SELECT * from people;
+
+CREATE TABLE people(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+first_name TEXT,
+last_name TEXT,
+age INTEGER,
+gender TEXT
+);
+
+DROP TABLE people;
+
+INSERT INTO people VALUES (1, 'first1', 'last1', 21, 'M');
+INSERT INTO people VALUES (2, 'first2', 'last2', 22, 'F');
+INSERT INTO people VALUES (3, 'first3', 'last3', 23, 'M');
+INSERT INTO people VALUES (4, 'first4', 'last4', 24, 'F');
+----------------------------------------------------------
+CREATE TABLE product (name TEXT, num INTEGER, price INTEGER, discount INTEGER);
+SELECT * from product;
+
+INSERT INTO product VALUES ('Mouse', 7, 2500, 0);
+INSERT INTO product VALUES ('Laptop', 2, 65000, 12000);
+INSERT INTO product VALUES ('Monitor', 4, 35000, 0);
+INSERT INTO product VALUES ('Printer', 5, 8000, 2000);
+INSERT INTO product VALUES ('Keyboard', 4, 10000, 0);
+
+SELECT *, price - discount FROM product;
+----------------------------------------------------------
+CREATE TABLE exam ( name TEXT, result INTEGER);
+
+INSERT INTO exam VALUES('Kim' , 75);
+INSERT INTO exam VALUES('Lee' , 98);
+INSERT INTO exam VALUES('Jack', 69);
+INSERT INTO exam VALUES('rich', 80);
+
+SELECT name, result, 
+CASE
+    WHEN result > 88 THEN 'PASS'
+    WHEN result > 70 THEN 'Check'
+    ELSE 'FAIL'
+END AS judgement
+FROM exam;
+----------------------------------------------------------
+CREATE TABLE user ( gender TEXT, city TEXT );
+
+INSERT INTO user VALUES('M', "busan");
+INSERT INTO user VALUES('F', "seoul");
+INSERT INTO user VALUES('M', "busan");
+INSERT INTO user VALUES('F', "dajeon");
+
+SELECT * FROM user;
+SELECT COUNT(*) FROM user; <= 매우매우 중요
+SELECT gender , COUNT(*) FROM user GROUP BY gender;
+SELECT gender, COUNT(*) FROM user GROUP BY city;
+SELECT city, COUNT(*) FROM user GROUP BY city;
+SELECT gender, city, count(*) FROM user GROUP BY gender, city;
+----------------------------------------------------------
+CREATE TABLE store(branch TEXT, sales INTEGER);
+
+INSERT INTO store VALUES ('Seoul', 150);
+INSERT INTO store VALUES ('Busan', 450);
+INSERT INTO store VALUES ('Daegu', 300);
+INSERT INTO store VALUES ('Seoul', 250);
+
+SELECT SUM(sales), TOTAL(sales) FROM store
+
+SELECT branch, SUM(sales) FROM store GROUP BY  branch;
+
+SELECT branch, SUM(sales), AVG(sales) FROM store GROUP BY branch;
+
+SELECT MAX(sales), MIN(sales) FROM store;
+
+SELECT branch, MAX(sales), MIN(sales) FROM store GROUP BY branch;

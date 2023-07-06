@@ -17,8 +17,20 @@ def users_info():
     search_user   = request.args.get('search_user',   default="", type=str)
     choice_gender = request.args.get('choice_gender', default="", type=str)
 
-    if search_user: # search filter
+    highlight_index = [(0,0) for _ in users]
+    if search_user: # search filter + highlight
         users = [user for user in users if search_user in user[1]]
+        highlight_index = []
+        for user in users:
+            name = user[1]
+            isIn = False
+            for i in range(len(name) - len(search_user) + 1):
+                if search_user == name[i : i + len(search_user)]:
+                    highlight_index.append( (i, i + len(search_user) - 1) )
+                    print(highlight_index)
+                    isIn = True
+                    break
+
     if choice_gender: # gender select filter 
         users = [user for user in users if choice_gender == user[2]]
     if id: # click id
@@ -26,6 +38,7 @@ def users_info():
         return render_template("click_userid.html", headers = headers, 
                                userdata = userdata, username = users[0][1], 
                                page = page, search_user=search_user)
+    
     
     pagemaker = Pagination()
     pagemaker.makepagination(users, page)
@@ -35,7 +48,7 @@ def users_info():
     total_page = pagemaker.total_page
     pagination_start = pagemaker.pagination_start
     pagination_end = pagemaker.pagination_end
-    move_page_front = pagemaker.move_page_back
+    move_page_front = pagemaker.move_page_front
     move_page_back = pagemaker.move_page_back
     
     return render_template("users.html",
@@ -43,4 +56,4 @@ def users_info():
                            page=page, total_page=total_page,
                            pagination_start=pagination_start, pagination_end=pagination_end,
                            move_page_front=move_page_front, move_page_back=move_page_back,
-                           search_user=search_user, choice_gender=choice_gender)
+                           search_user=search_user, choice_gender=choice_gender, highlight_index=highlight_index)

@@ -32,7 +32,7 @@ def orderitems_info():
     total_page = pagemaker.total_page
     pagination_start = pagemaker.pagination_start
     pagination_end = pagemaker.pagination_end
-    move_page_front = pagemaker.move_page_back
+    move_page_front = pagemaker.move_page_front
     move_page_back = pagemaker.move_page_back
 
     return render_template("orderitems.html",

@@ -7,12 +7,23 @@
 
 {% block id_click %}
 {% for i in range(users | length) %}
-    <tr>
-    {% for j in range(users[i] | length) %}
+    {% set user = users[i] %}
+    <tr>''7
+    {% for j in range(user | length) %}
         {% if j==0 %}
-            <td><a href="/users?id={{ users[i][0] }}&search_user={{ search_user }}&page={{ page }}">{{ users[i][0] }}</a></td>
+            <td><a href="/users?id={{ user[0] }}&search_user={{ search_user }}&page={{ page }}">{{ user[0] }}</a></td>
+        {% elif j==1 %}
+            <td>
+                {% if highlight_index != 0 %}
+                    {% set start = highlight_index[i][0] %}
+                    {% set end = highlight_index[i][1] %}
+                    {{ user[j][0:start] }}<mark>{{ user[j][start:end+1] }}</mark>{{ user[j][end+1:] }}
+                {% else %}
+                    {{ user[j] }}
+                {% endif %}
+            </td>
         {% else %}
-            <td>{{ users[i][j] }}</td>
+            <td>{{ user[j] }}</td>
         {% endif %}
     {% endfor %}
     </tr>
