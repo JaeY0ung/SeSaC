@@ -10,9 +10,11 @@
 <body>
     <h1>{{ storename }}의 정보</h1>
     <table class="table table-striped">
-    {% for header in headers %}
-        <th>{{ header }}</th>
-    {% endfor %}
+        <tr class="table-primary">
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
 
     {% for i in range(storedata | length) %}
         <tr>

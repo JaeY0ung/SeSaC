@@ -8,9 +8,8 @@ item_bp = Blueprint('item', __name__)
 def items_info():
     file_rdr = File()
     data     = file_rdr.read("src/item.csv")
-
-    headers = [header.strip() for header in data[0]]
-    items   = data[1:]
+    headers  = [header.strip() for header in data[0]]
+    items    = data[1:]
 
     page        = request.args.get('page',        default=1,  type=int)
     id          = request.args.get('id'  ,        default="", type=str)
@@ -28,9 +27,18 @@ def items_info():
                                page = page, search_item=search_item)
     
     pagemaker = Pagination()
-    start_index, end_index, total_page, pagination_start, pagination_end, move_page_front, move_page_back = pagemaker.makepagination(items, page)
+    pagemaker.makepagination(items, page)
+
+    start_index = pagemaker.start_index
+    end_index = pagemaker.end_index
+    total_page = pagemaker.total_page
+    pagination_start = pagemaker.pagination_start
+    pagination_end = pagemaker.pagination_end
+    move_page_front = pagemaker.move_page_back
+    move_page_back = pagemaker.move_page_back
     
-    return render_template("items.html", headers=headers, items=items[start_index : end_index + 1], 
+    return render_template("items.html",
+                           headers=headers, items=items[start_index : end_index + 1], 
                            page=page, total_page=total_page, 
                            pagination_start=pagination_start, pagination_end=pagination_end, 
                            move_page_front=move_page_front, move_page_back=move_page_back,

@@ -43,9 +43,11 @@
     </form>
 
     <table class="table table-striped">
-    {% for header in headers %}
-        <th>{{ header }}</th>
-    {% endfor %}
+        <tr class="table-primary">
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
     <!-- 사용자 id 클릭시 이동 버튼 -->
     {% for i in range(items | length) %}
         <tr>

@@ -45,21 +45,23 @@
     </form>
 
     <table class="table table-striped">
-    {% for header in headers %}
-        <th>{{ header }}</th>
-    {% endfor %}
-    <!-- 사용자 id 클릭시 이동 버튼 -->
-    {% for i in range(stores | length) %}
-        <tr>
-        {% for j in range(stores[i] | length) %}
-            {% if j==0 %}
-                <td><a href="/stores?id={{ stores[i][0] }}&search_store={{ search_store }}&page={{ page }}">{{ stores[i][0] }}</a></td>
-            {% else %}
-                <td>{{ stores[i][j] }}</td>
-            {% endif %}
-        {% endfor %}
+        <tr class="table-primary">
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
         </tr>
-    {% endfor %}
+        <!-- 사용자 id 클릭시 이동 버튼 -->
+        {% for i in range(stores | length) %}
+            <tr>
+            {% for j in range(stores[i] | length) %}
+                {% if j==0 %}
+                    <td><a href="/stores?id={{ stores[i][0] }}&search_store={{ search_store }}&page={{ page }}">{{ stores[i][0] }}</a></td>
+                {% else %}
+                    <td>{{ stores[i][j] }}</td>
+                {% endif %}
+            {% endfor %}
+            </tr>
+        {% endfor %}
     </table>
 
     <nav aria-label="Page navigation example">

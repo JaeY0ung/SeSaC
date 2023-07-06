@@ -27,9 +27,11 @@
     {% block form %}
     {% endblock %}
     <table class="table table-striped table-hover">
-    {% for header in headers %}
-        <th>{{ header }}</th>
-    {% endfor %}
+        <tr class="table-primary">
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
     <!-- 사용자 id 클릭시 이동 버튼 -->
     {% block id_click %}
     {% endblock %}

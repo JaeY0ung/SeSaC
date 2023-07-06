@@ -10,9 +10,11 @@
 <body>
     <h1>{{ orderitemname }}의 정보</h1>
     <table class="table table-striped">
-    {% for header in headers %}
-        <th>{{ header }}</th>
-    {% endfor %}
+        <tr class="table-primary">
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
 
     {% for i in range(orderitemdata | length) %}
         <tr>

@@ -56,21 +56,23 @@
     </form>
 
     <table class="table table-striped">
-    {% for header in headers %}
-        <th>{{ header }}</th>
-    {% endfor %}
-    <!-- 사용자 id 클릭시 이동 버튼 -->
-    {% for i in range(orders | length) %}
-        <tr>
-        {% for j in range(orders[i] | length) %}
-            {% if j==0 %}
-                <td><a href="/orders?id={{ orders[i][0] }}&search_order={{ search_order }}&page={{ page }}">{{ orders[i][0] }}</a></td>
-            {% else %}
-                <td>{{ orders[i][j] }}</td>
-            {% endif %}
-        {% endfor %}
+        <tr class="table-primary">
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
         </tr>
-    {% endfor %}
+        <!-- 사용자 id 클릭시 이동 버튼 -->
+        {% for i in range(orders | length) %}
+            <tr>
+            {% for j in range(orders[i] | length) %}
+                {% if j==0 %}
+                    <td><a href="/orders?id={{ orders[i][0] }}&search_order={{ search_order }}&page={{ page }}">{{ orders[i][0] }}</a></td>
+                {% else %}
+                    <td>{{ orders[i][j] }}</td>
+                {% endif %}
+            {% endfor %}
+            </tr>
+        {% endfor %}
     </table>
     <nav aria-label="Page navigation example">
         <ul class="pagination" style="justify-content : center;">
