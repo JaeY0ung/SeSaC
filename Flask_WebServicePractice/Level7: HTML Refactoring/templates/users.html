@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+유저
+{% endblock %}
+
+
+{% block id_click %}
+{% for i in range(users | length) %}
+    <tr>
+    {% for j in range(users[i] | length) %}
+        {% if j==0 %}
+            <td><a href="/users?id={{ users[i][0] }}&search_user={{ search_user }}&page={{ page }}">{{ users[i][0] }}</a></td>
+        {% else %}
+            <td>{{ users[i][j] }}</td>
+        {% endif %}
+    {% endfor %}
+    </tr>
+{% endfor %}
+{% endblock %}
+
+
+{% block ul_pagination %}
+<div class="d-flex justify-content-center">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if move_page_front %}
+                <li  class="page-item"><a class="page-link" href='/users?search_user={{ search_user }}&page={{ 1 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/users?search_user={{ search_user }}&page={{ page-5 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&laquo;</span></a></li>
+            {% endif %}
+            {% for p in range(pagination_start, pagination_end+1) %}
+                
+                <li  class="page-item"><a class="page-link" href='/users?search_user={{ search_user }}&page={{ p }}&choice_gender={{ choice_gender }}'>
+                    {% if page == p %}
+                        <strong><mark >
+                    {% endif %}
+                    {{ p }}
+                    {% if page == p %}
+                        </strong></mark>
+                    {% endif %}
+                </a></li>
+            {% endfor %}
+            {% if move_page_back %}
+                <li  class="page-item"><a class="page-link" href='/users?search_user={{ search_user }}&page={{ page+5 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&raquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/users?search_user={{ search_user }}&page={{ total_page }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}
+
+
+{% block form %}
+<form method="get">
+    <ul class="mt-3" style="display:flex; flex-direction:row; flex-wrap:wrap;">
+        <input type="text" name="search_user" value="{{ search_user }}" style="margin-right:10px;">
+        <select name="choice_gender" style="margin-right:10px;" >
+            <option value="{{ choice_gender }}" selected disabled hidden>성별</option>
+            <option value="">공통</option>
+            <option value="Male">남성</option>
+            <option value="Female">여성</option>
+        </select>
+        <input type="submit" value="이동">
+    </ul>
+</form>
+{% endblock %}
