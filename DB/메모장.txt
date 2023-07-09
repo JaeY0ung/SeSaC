@@ -101,7 +101,7 @@ AND
 password="abcd1111";
 
 ----------------------------------------------------------
-
+ <과제>
 1. non_usa_customers.sql: Provide a query showing Customers (just their full names, customer ID and country) who are not in the US.
 2. brazil_customers.sql: Provide a query only showing the Customers from Brazil.
 3. brazil_customers_invoices.sql: Provide a query showing the Invoices of customers who are from Brazil. The resultant table should show the customer's full name, Invoice ID, Date of the invoice and billing country.
@@ -129,6 +129,36 @@ password="abcd1111";
 25. top_5_tracks.sql: Provide a query that shows the top 5 most purchased songs.
 26. top_3_artists.sql: Provide a query that shows the top 3 best selling artists.
 27. top_media_type.sql: Provide a query that shows the most purchased Media Type.
+
+
 SELECT FirstName, LastName, CustomerId, Country FROM customers WHERE country != 'USA';
 
 SELECT DISTINCT country FROM customers;
+
+----------------------------------------------------------
+<SQL 문법 공부>
+
+- 테이블 생성
+CREATE TABLE tablename( elementkey1 INTEGER, elementkey2 TEXT, elementkey3 INTEGER );
+
+- 원하는 정보 추출
+SELECT  *                    FROM  tablename WHERE elementkey   LIKE 'findvalue%';
+SELECT  COUNT(*)             FROM  user;                                          <= 매우매우 중요
+SELECT  *, price - discount  FROM  product;
+SELECT name, result, 
+CASE
+    WHEN result > 88 THEN 'PASS'
+    WHEN result > 70 THEN 'Check'
+    ELSE 'FAIL'
+END AS judgement
+FROM exam;
+
+
+- 원하는 데이터 삽입
+INSERT INTO tablename VALUES (elementvalue1, elementvalue2, elementvalue3);
+INSERT INTO tablename(elementkey1, elementkey2, elementkey3) VALUES (elementvalue1, elementvalue2, elementvalue3);
+
+- 테이블 삭제
+DROP TABLE tablename;
+
+DATE_FORMAT(HIRE_YMD, '%Y-%m-%d') AS HIRE_YMD
