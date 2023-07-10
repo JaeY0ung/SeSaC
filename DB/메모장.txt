@@ -162,3 +162,35 @@ INSERT INTO tablename(elementkey1, elementkey2, elementkey3) VALUES (elementvalu
 DROP TABLE tablename;
 
 DATE_FORMAT(HIRE_YMD, '%Y-%m-%d') AS HIRE_YMD
+----------------------------------------------------------
+1. csv 파일 db로 만들기
+.mode csv
+.import 파일명 테이블명
+
+CREATE TABLE users2("Id" TEXT, "Name" TEXT, "Gender" TEXT, "Age" INTEGER, "Birthdate" TEXT);
+INSERT INTO users2(Id, Name, Gender, Age, Birthdate) SELECT id, name, gender, age, birthdate FROM users;
+
+SELECT * FROM users2 LIMIT 5;
+SELECT COUNT(*) FROM users;
+SELECT COUNT(*) FROM users2;
+DROP TABLE users;
+ALTER TABLE users2 rename to users;
+
+2. 애초에 테이블의 구조를 짜기
+
+.mode
+.import crm_users.csv users
+
+CREATE TABLE users2(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "uuid" TEXT,
+    "Name" TEXT,
+    "Birthdate" TEXT,
+    "Gender" TEXT,
+    "Age" INTEGER,
+    "address", TEXT);
+
+SELECT * FROM users;
+SELECT * FROM users2;
+
+INSERT INTO users2(Id, Name, Gender, Age, Birthdate) SELECT id, name, gender, age, birthdate FROM users;
