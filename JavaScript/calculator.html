@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재영이 계산기</title>
+
+    <style>
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button{
+            width: 50px;
+            height: 40px;
+        }
+        div{
+            margin-bottom: 5px;
+        }
+        input{
+            width: 205px;
+            height: 40px;
+        }
+        .container{
+            width: 100%;
+        }
+    </style>
+    <script>
+        function show(){
+            let inputelement = document.getElementById("cal");
+            inputelement.value = eval(inputelement.value);
+        }
+        function cancel(){
+            let inputelement = document.getElementById("cal");
+            inputelement.value = "";
+        }
+        function vaiable(variable){
+            let inputelement = document.getElementById("cal");
+            inputelement.value += variable;
+        }
+    </script>
+</head>
+<body>
+    <div style="width:220px;" >
+        <div>
+            <input type="text" id="cal" value="" readonly/>
+        </div>
+        <div class="container">
+            <button id="oper1" onclick="vaiable('+')">+</button>
+            <button id="oper2" onclick="vaiable('-')">-</button>
+            <button id="oper3" onclick="vaiable('*')">*</button>
+            <button id="oper4" onclick="vaiable('/')">/</button>
+        </div>
+        <div class="container">
+            <button onclick="vaiable(7)">7</button>
+            <button onclick="vaiable(8)">8</button>
+            <button onclick="vaiable(9)">9</button>
+            <button id="show" onclick="show()">=</button>
+        </div>
+        <div class="container">
+            <button onclick="vaiable(4)">4</button>
+            <button onclick="vaiable(5)">5</button>
+            <button onclick="vaiable(6)">6</button>
+            <button id="cancel" onclick="cancel()">C</button>
+        </div>
+        <div class="container">
+            <button onclick="vaiable(1)">1</button>
+            <button onclick="vaiable(2)">2</button>
+            <button onclick="vaiable(3)">3</button>
+            <button onclick="vaiable(0)">0</button>
+        </div>
+    </div>
+</body>
+</html>
