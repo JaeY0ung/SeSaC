@@ -29,20 +29,22 @@
         }
     </style>
     <script>
+        let before = null;
+        let after = null;
         function show(){
             let inputelement = document.getElementById("cal");
             inputelement.value = eval(inputelement.value);
+            before = null
         }
         function cancel(){
             let inputelement = document.getElementById("cal");
             inputelement.value = "";
+            before = null
         }
         function vaiable(variable){
             let inputelement = document.getElementById("cal");
             inputelement.value += variable;
         }
-        let before = null;
-        let after = null;
         function check(id, variable){
             let x = document.getElementById(id);
             if (['+','-','*','/'].includes(x.innerText)){
