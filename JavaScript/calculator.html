@@ -41,6 +41,20 @@
             let inputelement = document.getElementById("cal");
             inputelement.value += variable;
         }
+        let before = null;
+        let after = null;
+        function check(id, variable){
+            let x = document.getElementById(id);
+            if (['+','-','*','/'].includes(x.innerText)){
+                after = true;
+            }else{
+                after = false;
+            }
+            if (before != true | after != true){
+                vaiable(variable);
+            }
+            before = after;
+        }
     </script>
 </head>
 <body>
@@ -49,28 +63,28 @@
             <input type="text" id="cal" value="" readonly/>
         </div>
         <div class="container">
-            <button id="oper1" onclick="vaiable('+')">+</button>
-            <button id="oper2" onclick="vaiable('-')">-</button>
-            <button id="oper3" onclick="vaiable('*')">*</button>
-            <button id="oper4" onclick="vaiable('/')">/</button>
+            <button id="oper1" onclick="check('oper1', ' + ')">+</button>
+            <button id="oper2" onclick="check('oper2', ' - ')">-</button>
+            <button id="oper3" onclick="check('oper3', ' * ')">*</button>
+            <button id="oper4" onclick="check('oper4', ' / ')">/</button>
         </div>
         <div class="container">
-            <button onclick="vaiable(7)">7</button>
-            <button onclick="vaiable(8)">8</button>
-            <button onclick="vaiable(9)">9</button>
+            <button id="num7" onclick="check('num7', 7)">7</button>
+            <button id="num8" onclick="check('num8', 8)">8</button>
+            <button id="num9" onclick="check('num9', 9)"">9</button>
             <button id="show" onclick="show()">=</button>
         </div>
         <div class="container">
-            <button onclick="vaiable(4)">4</button>
-            <button onclick="vaiable(5)">5</button>
-            <button onclick="vaiable(6)">6</button>
+            <button id="num4" onclick="check('num4', 4)">4</button>
+            <button id="num5" onclick="check('num5', 5)">5</button>
+            <button id="num6" onclick="check('num6', 6)">6</button>
             <button id="cancel" onclick="cancel()">C</button>
         </div>
         <div class="container">
-            <button onclick="vaiable(1)">1</button>
-            <button onclick="vaiable(2)">2</button>
-            <button onclick="vaiable(3)">3</button>
-            <button onclick="vaiable(0)">0</button>
+            <button id="num1" onclick="check('num1', 1)">1</button>
+            <button id="num2" onclick="check('num2', 2)">2</button>
+            <button id="num3" onclick="check('num3', 3)">3</button>
+            <button id="num0" onclick="check('num0', 0)">0</button>
         </div>
     </div>
 </body>
