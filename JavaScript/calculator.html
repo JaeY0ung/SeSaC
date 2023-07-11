@@ -31,31 +31,58 @@
     <script>
         let before = null;
         let after = null;
+        let isshow = null;
+        <!-- isshow가 true면 직전에 '=' 눌렀다는 것/ 다음에 숫자 쓸 때 리셋하고 operation 들어오면 그숫자 그대로 계산 -->
+        <!-- isshow가 false면 직전에 '='을 누르지 않았다는 것/ -->
         function show(){
             let inputelement = document.getElementById("cal");
-            inputelement.value = eval(inputelement.value);
-            before = null
+            if(before == "/" & after == "0"){
+                show_exception();
+            }else{
+                inputelement.value = eval(inputelement.value);
+                before = inputelement.value.slice(-1);
+                isshow = true;
+            }
         }
-        function cancel(){
+        function show_exception(){
+            let inputelement = document.getElementById("cal");
+            inputelement.value = 'EXCEPTION';
+            before = null;
+            isshow = true;
+        }
+        function erase(){
             let inputelement = document.getElementById("cal");
             inputelement.value = "";
-            before = null
+            before = null;
+            isshow = null;
         }
-        function vaiable(variable){
+        function sendMessage(variable){
             let inputelement = document.getElementById("cal");
             inputelement.value += variable;
+            isshow = false;
         }
         function check(id, variable){
             let x = document.getElementById(id);
-            if (['+','-','*','/'].includes(x.innerText)){
-                after = true;
+            after = x.innerText;
+            if(isshow == true){
+                if(['+','-','*','/'].includes(after) != true){
+                    erase();
+                }
+                if(before == null & (after == '*' | after == '/')){
+                    erase();
+                }else if(['+','-','*','/'].includes(before) != true | ['+','-','*','/'].includes(after) != true){
+                    sendMessage(variable);
+                    before = after;
+                }
             }else{
-                after = false;
+                if(before == null & (after == '*' | after == '/')){
+                    erase();
+                }else if(['+','-','*','/'].includes(before) != true | ['+','-','*','/'].includes(after) != true){
+                    sendMessage(variable);
+                    before = after;
+                }
             }
-            if (before != true | after != true){
-                vaiable(variable);
-            }
-            before = after;
+            
         }
     </script>
 </head>
@@ -80,7 +107,7 @@
             <button id="num4" onclick="check('num4', 4)">4</button>
             <button id="num5" onclick="check('num5', 5)">5</button>
             <button id="num6" onclick="check('num6', 6)">6</button>
-            <button id="cancel" onclick="cancel()">C</button>
+            <button id="erase" onclick="erase()">C</button>
         </div>
         <div class="container">
             <button id="num1" onclick="check('num1', 1)">1</button>
