@@ -29,42 +29,48 @@
         }
     </style>
     <script>
-        let before = null;
-        let after = null;
-        let isshow = null;
-        <!-- isshow가 true면 직전에 '=' 눌렀다는 것/ 다음에 숫자 쓸 때 리셋하고 operation 들어오면 그숫자 그대로 계산 -->
-        <!-- isshow가 false면 직전에 '='을 누르지 않았다는 것/ -->
+        var before = null;
+        var after = null;
+        var is_right_before_show = null;
+        // is_right_before_show가 true면 직전에 '=' 눌렀다는 것/ 다음에 숫자 쓸 때 리셋하고 operation 들어오면 그 숫자 그대로 계산
+        // is_right_before_show가 false면 직전에 '='을 누르지 않았다는 것/
+
         function show(){
-            let inputelement = document.getElementById("cal");
+            var inputelement = document.getElementById("cal");
             if(before == "/" & after == "0"){
                 show_exception();
             }else{
                 inputelement.value = eval(inputelement.value);
                 before = inputelement.value.slice(-1);
-                isshow = true;
+                is_right_before_show = true;
             }
         }
         function show_exception(){
-            let inputelement = document.getElementById("cal");
+            var inputelement = document.getElementById("cal");
             inputelement.value = 'EXCEPTION';
             before = null;
-            isshow = true;
+            is_right_before_show = true;
         }
         function erase(){
-            let inputelement = document.getElementById("cal");
+            var inputelement = document.getElementById("cal");
             inputelement.value = "";
             before = null;
-            isshow = null;
+            is_right_before_show = null;
         }
         function sendMessage(variable){
-            let inputelement = document.getElementById("cal");
-            inputelement.value += variable;
-            isshow = false;
+            var inputelement = document.getElementById("cal");
+            if(inputelement.value == '0' & variable in ['0','1','2','3','4','5','6','7','8','9']){
+                inputelement.value = variable;
+                is_right_before_show = false;
+            }else if (inputelement.value != '0' | variable != '0'){
+                inputelement.value += variable;
+                is_right_before_show = false;
+            }
         }
         function check(id, variable){
-            let x = document.getElementById(id);
+            var x = document.getElementById(id);
             after = x.innerText;
-            if(isshow == true){
+            if(is_right_before_show == true){
                 if(['+','-','*','/'].includes(after) != true){
                     erase();
                 }
@@ -82,7 +88,6 @@
                     before = after;
                 }
             }
-            
         }
     </script>
 </head>

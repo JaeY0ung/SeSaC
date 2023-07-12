@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Revenue</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <h1>월간 매출액</h1>
+    <table>
+        <tr>
+            <td>  연 월  </td>
+            <td>월간 매출액</td>
+        </tr>
+        <!-- 미션1. jinja 템플렛을 통해 받아온 결과를 테이블로 for 루프 -->
+        {% for row in rows %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+        </tr>
+        {% endfor %}
+        <!-- 미션2. 그래프로 대체 chart.js-->
+    </table>
+
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById("myChart");
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ labels | safe}},
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: {{ revenues | safe}},
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+            }]
+            },
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+SELECT FirstName||" "||LastName as FullNames, customerid, country  FROM Customers;

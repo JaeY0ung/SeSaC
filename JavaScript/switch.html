@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var fruit1 = document.getElementById("fruit1").innerText;
+        var fruit2 = document.getElementById("fruit2").innerText;
+        var fruit3 = document.getElementById("fruit3").innerText;
+        function selectFruit(){
+            var fruit = document.getElementById("fruit").value;
+            <!-- document.write("<P>"); -->
+            switch(fruit) {
+                case fruit1:
+                    document.write(fruit1+"<BR>");
+                    break;
+                case fruit2:
+                    document.write(fruit2+"<BR>");
+                    break;
+                case fruit3:
+                    document.write(fruit3+"<BR>");
+                    break;
+                default:
+                    document.write("선택되지 않았습니다<BR>");
+            }
+        }
+    </script>
+</head>
+<body>
+    <H1>과일 고르기</H1>
+    <select id="fruit" onchange="selectFruit()">
+        <option id="fruit1" value="Apple">Apple</option>
+        <option id="fruit2" value="Banana">Banana</option>
+        <option id="fruit3" value="Kiwi">Kiwi</option>
+    </select>
+</body>
+</html>
