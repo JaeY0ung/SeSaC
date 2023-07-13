@@ -118,7 +118,6 @@ class User_StoreIdGenerator_in_Order:
         storeid = random.choice(self.storeid_data)
         return storeid
 
-
 class Order_ItemIdGenerator_in_Orderitems:
     def __init__(self, order_csvfile, item_csvfile):
         self.orderid_data= self.read_csv(order_csvfile)
@@ -182,7 +181,6 @@ class ItemNameGenerator:
     
     def generate_itemprice(self):
         return self.item_price
-    
 # 인자 : si_file, gu_file
 class AddressGenerator:
     # 파일 로드는 한번만 실행시키기 위해
@@ -205,28 +203,19 @@ class AddressGenerator:
         last_num = random.randint(1,99)
         self.gu = gu
         return f"{si} {gu} {street:02d}{lo_gil} {last_num:02d}"
-    
 
-class DataGenerator:
-    def __init__(self, sung_file, irum_file, storetype_file, si_file, gu_file, user_csvfile, store_csvfile, order_csvfile, item_csvfile):
-        self.initialSetting_user(sung_file, irum_file, si_file, gu_file)
-        self.initialSetting_store(storetype_file, si_file, gu_file)
-        self.initialSetting_order(user_csvfile, store_csvfile)
-        self.initialSetting_orderitem(order_csvfile, item_csvfile)
-        self.initialSetting_item()
-        self.userheader = []
-        self.storeheader = []
-        self.orderheader = []
-        self.orderitemheader = []
-        self.itemheader = []
-        
-    def initialSetting_user(self, sung_file, irum_file, si_file, gu_file):
+##################
+# DATA GENERAGOR #
+##################
+class UserDataGenerator:
+    def __init__(self, sung_file, irum_file, si_file, gu_file):
         self.id_gen = IDGenerator()
         self.username_gen = UserNameGenerator(sung_file, irum_file)
         self.birthdate_gen = UserBirthdateGenerator()
         self.gender_gen = UserGenderGenerator()
         self.age_gen = AgeGenerator()
         self.address_gen = AddressGenerator(si_file, gu_file)
+        self.userheader = []
 
     def generate_user(self, count):
         data = []
@@ -244,11 +233,13 @@ class DataGenerator:
             data.append(dict(zip(keys, values)))
         return data
 
-    def initialSetting_store(self, storetype_file, si_file, gu_file):
+class StoreDataGenerator:
+    def  __init__(self, storetype_file, si_file, gu_file):
         self.id_gen = IDGenerator()
         self.storename_gen = StoreNameGenerator()
         self.type_gen = StoreTypeGenerator(storetype_file)
         self.address_gen = AddressGenerator(si_file, gu_file)
+        self.storeheader = []
     
     def generate_store(self, count):
         data = []
@@ -263,11 +254,13 @@ class DataGenerator:
             self.storeheader = keys
             data.append(dict(zip(keys, values)))
         return data
-
-    def initialSetting_order(self, user_csvfile, store_csvfile):
+    
+class OrderDataGenerator:
+    def  __init__(self, user_csvfile, store_csvfile):
         self.id_gen = IDGenerator()
         self.orderat_gen = OrderAtGenerator()
         self.user_store_gen = User_StoreIdGenerator_in_Order(user_csvfile, store_csvfile)
+        self.orderheader = []
     
     def generate_order(self, count):
         data = []
@@ -282,10 +275,12 @@ class DataGenerator:
             self.orderheader = keys
             data.append(dict(zip(keys, values)))
         return data
-
-    def initialSetting_orderitem(self, order_csvfile, item_csvfile):
+    
+class OrderItemDataGenerator:
+    def  __init__(self, order_csvfile, item_csvfile):
         self.id_gen = IDGenerator()
         self.order_item_gen = Order_ItemIdGenerator_in_Orderitems(order_csvfile, item_csvfile)
+        self.orderitemheader = []
     
     def generate_orderitem(self, count):
         data = []
@@ -299,10 +294,12 @@ class DataGenerator:
             self.orderitemheader = keys
             data.append(dict(zip(keys, values)))
         return data
-
-    def initialSetting_item(self):
+    
+class ItemDataGenerator:
+    def  __init__(self):
         self.id_gen = IDGenerator()
         self.name_type_unitprice_gen = ItemNameGenerator()
+        self.itemheader = []
     
     def generate_item(self, count):
         data = []
@@ -317,7 +314,6 @@ class DataGenerator:
             self.itemheader = keys
             data.append(dict(zip(keys, values)))
         return data
-    
 
 class CSV_Printer:    
     def data_export_to_csv(self, data, csv_file, header):
@@ -327,20 +323,25 @@ class CSV_Printer:
             csvWriter.writerows(data)
 
 
-data_gen = DataGenerator(sung_file, irum_file, storetype_file, si_file, gu_file, user_csvfile, store_csvfile, order_csvfile, item_csvfile)
 csv_printer = CSV_Printer()
 
+data_gen = UserDataGenerator(sung_file, irum_file, si_file, gu_file)
 userdata = data_gen.generate_user(1000)
 csv_printer.data_export_to_csv(userdata, user_csvfile, data_gen.userheader)
 
+
+data_gen = StoreDataGenerator(storetype_file, si_file, gu_file)
 storedata = data_gen.generate_store(500)
 csv_printer.data_export_to_csv(storedata, store_csvfile, data_gen.storeheader)
 
+data_gen = OrderDataGenerator(user_csvfile, store_csvfile)
 orderdata = data_gen.generate_order(10000)
 csv_printer.data_export_to_csv(orderdata, order_csvfile, data_gen.orderheader)
 
+data_gen = ItemDataGenerator()
 itemdata = data_gen.generate_item(15)
 csv_printer.data_export_to_csv(itemdata, item_csvfile, data_gen.itemheader)
 
+data_gen = OrderItemDataGenerator(order_csvfile, item_csvfile)
 orderitemdata = data_gen.generate_orderitem(10000)
 csv_printer.data_export_to_csv(orderitemdata, orderitem_csvfile, data_gen.orderitemheader)
