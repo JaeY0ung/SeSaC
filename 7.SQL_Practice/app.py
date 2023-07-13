@@ -14,6 +14,7 @@ def index():
     # 2. 커서 만든다 (가져온다)
     cursor = conn.cursor()
     # 3. SQL 구문을 작성한다
+    
     query = """
         SELECT
             strftime('%Y-%m', 'orders'.'OrderAt') AS month,
@@ -26,7 +27,6 @@ def index():
             'items' ON 'orderitems'.'ItemId' = 'items'.'id'
         GROUP BY
             strftime('%Y-%m', 'orders'.'OrderAt')
-
         """
     # 4. 쿼리문을 실행해서 결과를 받아온다 (리스트 형태)
     cursor.execute(query)
@@ -40,7 +40,7 @@ def index():
         labels.append(row[0])
         revenues.append(row[1])
 
-    return render_template("index.html", rows=rows, labels=labels, revenues=revenues5)
+    return render_template("index.html", rows=rows, labels=labels, revenues=revenues)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8080)

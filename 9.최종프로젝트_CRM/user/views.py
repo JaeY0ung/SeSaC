@@ -1,8 +1,15 @@
 from flask import Blueprint, request, render_template
 from File import File
 from Pagination import Pagination
+import sqlite3
 
 user_bp = Blueprint('user', __name__)
+
+conn = sqlite3.connect('crm.db')
+cursor = conn.cursor()
+query = ''
+cursor.execute(query)
+datas = cursor.fetchall()
 
 @user_bp.route('/users')
 def users_info():

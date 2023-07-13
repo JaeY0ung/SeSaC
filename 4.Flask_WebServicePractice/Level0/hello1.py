@@ -20,8 +20,7 @@ def user_none():
 def user(name):
     return f"""
     <H1>This is{name}'s Homepage</H1>
-    <a href="/">Go Back</a>
-"""
+    <a href="/">Go Back</a>"""
 
 @app.route('/admin')
 def admin():
