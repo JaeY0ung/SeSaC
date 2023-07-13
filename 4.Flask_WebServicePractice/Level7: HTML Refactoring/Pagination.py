@@ -23,6 +23,7 @@ class Pagination:
             end_index = num_data - 1
 
         # Pagination (default: 현재 페이지 숫자가 가운데)
+        # 존재하는 페이지의 수가 pagination의 페이지 수보다 클 때
         if total_page >= page_per_pagination:
             if page <= 1+ page_per_pagination//2:
                 pagination_start, pagination_end = 1, page_per_pagination

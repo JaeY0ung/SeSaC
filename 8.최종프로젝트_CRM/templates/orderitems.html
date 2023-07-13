@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>주문한 물품</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Home</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="/users">User</a>
+              <a class="nav-link" href="/orders">Order</a>
+              <a class="nav-link" href="/orderitems">Order Item</a>
+              <a class="nav-link" href="/items">Item</a>
+              <a class="nav-link" href="/stores">Store</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    <!-- 사용자 검색 버튼 form 안에 있는 것은 마지막 상태로 넘어간다!-->
+    <form method="get">
+        <input type="text" name="search_orderitem" value="{{ search_orderitem }}" >
+        <input type="submit" value="이동">
+    </form>
+    <table class="table table-striped">
+        <tr class="table-primary">
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+    <!-- 사용자 id 클릭시 이동 버튼 -->
+    {% for i in range(orderitems | length) %}
+        <tr>
+        {% for j in range(orderitems[i] | length) %}
+            {% if j==0 %}
+                <td><a href="/orderitems?id={{ orderitems[i][0] }}&search_orderitem={{ search_orderitem }}&page={{ page }}">{{ orderitems[i][0] }}</a></td>
+            {% else %}
+                <td>{{ orderitems[i][j] }}</td>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination" style="justify-content : center;">
+            {% if move_page_front %}
+                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ 1 }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page-5 }}'><span aria-hidden="true">&laquo;</span></a></li>
+            {% endif %}
+            {% for p in range(pagination_start, pagination_end+1) %}
+                
+                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ p }}'>
+                    {% if page == p %}
+                        <strong><mark >
+                    {% endif %}
+                    {{ p }}
+                    {% if page == p %}
+                        </strong></mark>
+                    {% endif %}
+                </a></li>
+            {% endfor %}
+            {% if move_page_back %}
+                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page+5 }}'><span aria-hidden="true">&raquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ total_page }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
