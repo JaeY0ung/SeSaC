@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML 공부 내용</title>
+    <style>
+        p {
+            color: green;
+        }
+        li {
+            list-style-type: none;
+        }
+        .special {
+            color: orange;
+            font-weight: bold;
+        }
+        li.special {
+            color: orange;
+            font-weight: bold;
+        }
+        /* li 밑에 있는 em에 대해 적용 */
+        li em { 
+            color: rebeccapurple;
+        }
+        /*  동일한 계층 구조 수준에서 제목 바로 다음에 오는 단락의 스타일을 지정 */
+        h1 + p {
+            font-size: 200%;
+        }
+        a:link {
+            color: pink;
+        }
+        a:visited {
+            color: green;
+        }
+        a:hover {
+                text-decoration: none;
+        }
+          
+    </style>
+
+</head>
+<body>
+    <p>p: paragraph</p>
+    <h1>h1: header1</h1>
+    <h2>h1: header2</h2>
+    <h3>h3: header3</h3>
+    <h4>h4: header4</h4>
+    <h5>h5: header5</h5>
+    <h6>h6: header6</h6>
+    
+    <ul>
+        <h3>ul: 순서가 없는 리스트 요소(li)를 표현</h3>
+        <li>li: 순서가 없는 리스트 요소(li)를 표현</li>
+        <li>li: 순서가 없는 리스트 요소(li)를 표현</li>
+        <li>li: 순서가 없는 리스트 요소(li)를 표현</li>
+    </ul>
+    
+    <ol>
+        <h3>ol: 순서가 없는 리스트 요소(li)를 표현</h3>
+        <li>li: 순서가 있는 리스트 요소를 표현</li>
+        <li>li: 순서가 있는 리스트 요소를 표현</li>
+    </ol>
+    
+    <p><em>em: 글씨체 이탤릭체, 중요(Emphasis)</em></p>
+    <!-- hr: 긴 줄이 생김 -->
+    <hr>
+    <!-- br: break 줄 띄어넘기 -->
+    <br> 
+    <p><strong>strong: 글씨체 굵게, 강조(Strong importance)</strong></p>
+    <!-- 이 세 개는 모두 줄곧 사용되는 단어에만 쓰기 (의미론적..)-->
+    <h4><i>i: italic 기울여 쓰기</i></h4>
+    <h4><b>b: bold 두껍게 쓰기</b></h4>
+    <h4><u>u: underline 밑줄 긋기</u></h4>
+    <a href="https:www.naver.com" title="title: 링크 위에 커서를 대면 보인다">
+        <p>a: naver로 이동</p>
+        <img width="100px" height="100px" src="./메타몽.jpg" alt="메타몽 사진..">
+    </a>
+    <h3 id="h3">id 속성 연결함</h3>
+    <dl>
+        <dt>부제목: HTML 마스터하는 법</dt>
+        <dd>설명: 열심히 하면 마스터하겠지? 하하하 그냥 많이 연습해라!!</dd>
+    </dl>
+    <blockquote cite="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote">
+        <p>The <strong>HTML <code>&lt;blockquote&gt;</code> Element</strong> (or <em>HTML Block
+        Quotation Element</em>) indicates that the enclosed text is an extended quotation.</p>
+    </blockquote>
+
+
+
+</body>
+</html>
