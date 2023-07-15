@@ -44,7 +44,7 @@ class UserNameGenerator:
 class UserGenderGenerator:
     def generate_gender(self):
         usergender = random.choice(["Male", "Female"])
-        return f"{usergender:>6s}"
+        return f"{usergender}"
 
 # 인자 : birthyear (태어난 년도)      
 class AgeGenerator:
@@ -66,7 +66,7 @@ class UserBirthdateGenerator:
 class StoreNameGenerator:
     def generate_storename(self, shop_type, shop_address_gu):
         ho = random.randint(1, 9)
-        storename = f"{shop_type:>6s} {shop_address_gu:>4s}{ho}호점"
+        storename = f"{shop_type} {shop_address_gu} {ho}호점"
         return storename
 
 # 인자 : storeName_file
@@ -82,17 +82,17 @@ class StoreTypeGenerator:
     
     def generate_type(self):
         self.type = random.choice(self.store_data)
-        return f"{self.type:>6s}"
+        return f"{self.type}"
 
 # 인자 : X
 class OrderAtGenerator:
     def generate_orderat(self):
         month_days = [31,28,31,30,31,30,31,31,30,31,30,31]
         month = random.randint(1, 12)
-        day = random.randint(1, month_days[month-1] + 1)
+        day = random.randint(1, month_days[month-1])
         hour = random.randint(0,24)
-        miniute = random.randint(0,60)
-        second = random.randint(0,60)
+        miniute = random.randint(0,59)
+        second = random.randint(0,59)
         orderat = f"2023-{month:02d}-{day:02d} {hour:02d}:{miniute:02d}:{second:02d}"
         return orderat
 
@@ -321,7 +321,6 @@ class CSV_Printer:
             csvWriter = csv.DictWriter(file, header)
             csvWriter.writeheader()
             csvWriter.writerows(data)
-
 
 csv_printer = CSV_Printer()
 

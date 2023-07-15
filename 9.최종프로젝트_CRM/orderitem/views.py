@@ -1,15 +1,24 @@
 from flask import Blueprint, request, render_template
 from File import File
 from Pagination import Pagination
+import sqlite3
 
 orderitem_bp = Blueprint('orderitem', __name__)
 
+conn = sqlite3.connect('crm.db', check_same_thread=False)
+cursor = conn.cursor()
+
 @orderitem_bp.route('/orderitems')
 def orderitems_info():
-    file_rdr   = File()
-    data       = file_rdr.read("./csv/crm_orderitem.csv")
-    headers    = [header.strip() for header in data[0]]
-    orderitems = data[1:]
+    # file_rdr   = File()
+    # data       = file_rdr.read("./csv/crm_orderitem.csv")
+    # headers    = [header.strip() for header in data[0]]
+    # orderitems = data[1:]
+
+    headers = ['Id', 'OrderId', 'ItemId']
+    query = "SELECT Id, OrderId, ItemId FROM 'orderitems'"
+    cursor.execute(query)
+    orderitems = cursor.fetchall()
 
     page             = request.args.get('page',             default=1,  type=int)
     id               = request.args.get('id'  ,             default="", type=str)

@@ -5,19 +5,15 @@ import sqlite3
 
 user_bp = Blueprint('user', __name__)
 
-conn = sqlite3.connect('crm.db')
+conn = sqlite3.connect('crm.db', check_same_thread=False)
 cursor = conn.cursor()
-query = ''
-cursor.execute(query)
-datas = cursor.fetchall()
 
 @user_bp.route('/users')
 def users_info():
-    file_rdr = File()
-    data     = file_rdr.read("./csv/crm_user.csv")
-
-    headers = [header.strip() for header in data[0]]
-    users   = data[1:]
+    headers = ['Id', 'Name', 'Birthdate', 'Gender', 'Age', 'Address']
+    query = "SELECT Id, Name, Birthdate, Gender, Age, Address FROM 'users'"
+    cursor.execute(query)
+    users = cursor.fetchall()
 
     page          = request.args.get('page',          default=1,  type=int)
     id            = request.args.get('id'  ,          default="", type=str)
@@ -41,14 +37,13 @@ def users_info():
                     break
 
     if choice_gender: # gender select filter 
-        users = [user for user in users if choice_gender == user[3]]
+        users = [user for user in users if choice_gender in user[3]] # Male 앞에 공백 2개가 있어 in으로 처리
 
     if id: # click id
         userdata = [user for user in users if id == user[0]]
         return render_template("click_userid.html", headers = headers, 
                                userdata = userdata, username = users[0][1], 
                                page = page, search_user=search_user)
-    
     
     pagemaker = Pagination()
     pagemaker.makepagination(users, page)

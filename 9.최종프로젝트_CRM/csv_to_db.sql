@@ -1,13 +1,106 @@
+이제 이걸로 한다!
+
+- 모든 테이블 삭제
+
+DROP TABLE items;
+DROP TABLE orderitems;
+DROP TABLE orders;
+DROP TABLE stores;
+DROP TABLE users;
+
+
+-csv 파일 db로 저장
+
+.mode csv
+.import ../8.CRM_Generator/csv/crm_item.csv items2
+.import ../8.CRM_Generator/csv/crm_orderitem.csv orderitems2
+.import ../8.CRM_Generator/csv/crm_order.csv orders2
+.import ../8.CRM_Generator/csv/crm_store.csv stores2
+.import ../8.CRM_Generator/csv/crm_user.csv users2
+
+
+- id를 가진 table2 생성
+
+CREATE TABLE IF NOT EXISTS users(
+"UUID" INTEGER PRIMARY KEY AUTOINCREMENT,
+"Id" TEXT,
+"Name" TEXT,
+"Birthdate" DATETIME,
+"Gender" TEXT,
+"Age" INTEGER,
+"Address" TEXT);
+
+CREATE TABLE IF NOT EXISTS stores(
+"UUID" INTEGER PRIMARY KEY AUTOINCREMENT,
+"Id" TEXT,
+"Name" TEXT,
+"Type" TEXT,
+"Address" TEXT);
+
+CREATE TABLE IF NOT EXISTS orders(
+"UUID" INTEGER PRIMARY KEY AUTOINCREMENT,
+"Id" TEXT,
+"OrderAt" DATETIME,
+"StoreId" TEXT,
+"UserId" TEXT);
+
+CREATE TABLE IF NOT EXISTS items(
+"UUID" INTEGER PRIMARY KEY AUTOINCREMENT,
+"Id" TEXT,
+"Name" TEXT,
+"Type" TEXT,
+"UnitPrice" INTEGER);
+
+CREATE TABLE IF NOT EXISTS orderitems(
+"UUID" INTEGER PRIMARY KEY AUTOINCREMENT,
+"Id" TEXT,
+"OrderId" TEXT,
+"ItemId" TEXT);
+
+
+- db로 저장한 csv 데이터 id 있는 테이블에 복제
+
+INSERT INTO users(Id, Name, Birthdate, Gender, Age, Address) 
+SELECT Id, Name, Birthdate, Gender, Age, Address FROM users2;
+
+INSERT INTO stores(Id, Name, Type, Address) 
+SELECT Id, Name, Type, Address FROM stores2;
+
+INSERT INTO orders(Id, OrderAt, StoreId, UserId) 
+SELECT Id, OrderAt, StoreId, UserId FROM orders2;
+
+INSERT INTO items(Id, Name, Type, UnitPrice) 
+SELECT Id, Name, Type, UnitPrice FROM items2;
+
+INSERT INTO orderitems(Id, OrderId, ItemId) 
+SELECT Id, OrderId, ItemId FROM orderitems2;
+
+
+- csv로 만든 기존 테이블 삭제
+
+DROP TABLE users2;
+DROP TABLE stores2;
+DROP TABLE orders2;
+DROP TABLE items2;
+DROP TABLE orderitems2;
+
+- db 나가기
+.quit
+---------------------------------------------------
 - 모든 테이블 삭제
 
 DROP TABLE items;
 DROP TABLE items2;
+
 DROP TABLE orderitems;
 DROP TABLE orderitems2;
+
 DROP TABLE orders;
 DROP TABLE orders2;
+
 DROP TABLE stores;
 DROP TABLE stores2;
+
 DROP TABLE users;
 DROP TABLE users2;
 

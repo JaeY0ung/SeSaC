@@ -8,7 +8,9 @@
 </head>
 
 <body>
-    <h1>{{ storename }}의 정보</h1>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <h1>{{ storename }} 상세 정보  <button type="button" class="navyBtn", onclick="location.href='/stores?search_store={{ search_store }}&page={{ page }}'">    뒤로 가기</button></h1>
+    
     <table class="table table-striped">
         <tr class="table-primary">
             {% for header in headers %}
@@ -24,7 +26,49 @@
         </tr>
     {% endfor %}
     </table>
-    <button type="button" class="navyBtn", onclick="location.href='/stores?search_store={{ search_store }}&page={{ page }}'">뒤로 가기</button>
+
+    <table style="width: 250px; height:300px;" class="table table-bordered">
+        <tr class="table-primary">
+            <td>날짜</td>
+            <td>매출액</td>
+        </tr>
+        {% for row in monthly_revenue %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}원</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div style="width: 500px;"><canvas id="myChart"></canvas></div>
+    
+    <script>
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ labels | safe }},
+                datasets: [{
+                    label: '{{ storename }}의 월간 매출액',
+                    data: {{ revenues | safe }},
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        maxHeight: 30
+                    }
+                }
+            }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
