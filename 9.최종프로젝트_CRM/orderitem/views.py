@@ -10,43 +10,35 @@ cursor = conn.cursor()
 
 @orderitem_bp.route('/orderitems')
 def orderitems_info():
-    # file_rdr   = File()
-    # data       = file_rdr.read("./csv/crm_orderitem.csv")
-    # headers    = [header.strip() for header in data[0]]
-    # orderitems = data[1:]
+    page     = request.args.get('page',   default= 1, type=int)
+    click_id = request.args.get('id'  ,   default="", type=str)
+    search   = request.args.get('search', default="", type=str)
 
-    headers = ['Id', 'OrderId', 'ItemId']
-    query = "SELECT Id, OrderId, ItemId FROM 'orderitems'"
+    query = '''SELECT Id, OrderId, ItemId 
+               FROM 'orderitems'
+               WHERE 1=1
+            '''
+    if search:
+        query += f" AND Id LIKE '%{search}%'"
+    if click_id:
+        query += f" AND Id = '{click_id}'"
+
     cursor.execute(query)
+    #? 헤더
+    headers = [ data[0] for data in cursor.description]
     orderitems = cursor.fetchall()
 
-    page             = request.args.get('page',             default=1,  type=int)
-    id               = request.args.get('id'  ,             default="", type=str)
-    search_orderitem = request.args.get('search_orderitem', default="", type=str)
-
-    if search_orderitem:
-        orderitems = [orderitem for orderitem in orderitems if search_orderitem in orderitem[0]]
-
-    if id:
-        orderitemdata = [orderitem for orderitem in orderitems if id == orderitem[0]] # else break; 가능?
+    if click_id:
         return render_template("click_orderitemid.html", headers = headers, 
-                               orderitemdata = orderitemdata, orderitemname = orderitems[0][0], 
-                               page = page, search_orderitem=search_orderitem)
-
+                               orderitemdata = orderitems[0],
+                               page = page, search = search)
+    
     pagemaker = Pagination()
     pagemaker.makepagination(orderitems, page)
 
-    start_index = pagemaker.start_index
-    end_index = pagemaker.end_index
-    total_page = pagemaker.total_page
-    pagination_start = pagemaker.pagination_start
-    pagination_end = pagemaker.pagination_end
-    move_page_front = pagemaker.move_page_front
-    move_page_back = pagemaker.move_page_back
-
     return render_template("orderitems.html",
-                           headers=headers, orderitems=orderitems[start_index : end_index + 1], 
-                           page=page, total_page=total_page, 
-                           pagination_start=pagination_start, pagination_end=pagination_end,
-                           move_page_front=move_page_front, move_page_back=move_page_back,
-                           search_orderitem=search_orderitem)
+                           headers = headers, orderitems = orderitems[pagemaker.start_index : pagemaker.end_index + 1], 
+                           page = page, total_page = pagemaker.total_page, 
+                           pagination_start = pagemaker.pagination_start, pagination_end = pagemaker.pagination_end,
+                           move_page_front = pagemaker.move_page_front, move_page_back = pagemaker.move_page_back,
+                           search = search)

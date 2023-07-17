@@ -10,45 +10,36 @@ cursor = conn.cursor()
 
 @item_bp.route('/items')
 def items_info():
-    # file_rdr = File()
-    # data     = file_rdr.read("./csv/crm_item.csv")
-    # headers  = [header.strip() for header in data[0]]
-    # items    = data[1:]
-
-    headers = ['Id', 'Name', 'Type', 'UnitPrice']
-    query = "SELECT Id, Name, Type, UnitPrice FROM 'items'"
-    cursor.execute(query)
-    items = cursor.fetchall()
-
     page        = request.args.get('page',        default=1,  type=int)
-    id          = request.args.get('id'  ,        default="", type=str)
-    search_item = request.args.get('search_item', default="", type=str)
+    click_id    = request.args.get('id'  ,        default="", type=str)
+    search      = request.args.get('search',      default="", type=str)
     choice_type = request.args.get('choice_type', default="", type=str)
 
-    if search_item:
-        items = [item for item in items if search_item in item[0]]
+    query = '''SELECT Id, Name, Type, UnitPrice 
+               FROM 'items'
+               WHERE 1=1
+            '''
+    if search:
+        query += f" AND NAME LIKE '%{search}%'"
     if choice_type:
-        items = [item for item in items if choice_type == item[2]]
-    if id:
-        itemdata = [item for item in items if id == item[0]]
+        query += f" AND TYPE = '{choice_type}'"
+    if click_id:
+        query += f" AND Id = '{click_id}'"
+
+    cursor.execute(query)
+    headers = [data[0] for data in cursor.description]
+    items = cursor.fetchall()
+
+    if click_id:
         return render_template("click_itemid.html", headers = headers, 
-                               itemdata = itemdata, itemname = items[0][0], 
-                               page = page, search_item=search_item)
-    
+                               itemdata = items[0], page = page, search=search)
+
     pagemaker = Pagination()
     pagemaker.makepagination(items, page)
-
-    start_index = pagemaker.start_index
-    end_index = pagemaker.end_index
-    total_page = pagemaker.total_page
-    pagination_start = pagemaker.pagination_start
-    pagination_end = pagemaker.pagination_end
-    move_page_front = pagemaker.move_page_front
-    move_page_back = pagemaker.move_page_back
     
     return render_template("items.html",
-                           headers=headers, items=items[start_index : end_index + 1], 
-                           page=page, total_page=total_page, 
-                           pagination_start=pagination_start, pagination_end=pagination_end, 
-                           move_page_front=move_page_front, move_page_back=move_page_back,
-                           search_item=search_item, choice_type=choice_type)
+                           headers = headers, items = items[pagemaker.start_index : pagemaker.end_index + 1], 
+                           page = page, total_page = pagemaker.total_page, 
+                           pagination_start = pagemaker.pagination_start, pagination_end = pagemaker.pagination_end, 
+                           move_page_front = pagemaker.move_page_front, move_page_back = pagemaker.move_page_back,
+                           search = search, choice_type = choice_type)

@@ -10,74 +10,59 @@ cursor = conn.cursor()
 
 @store_bp.route('/stores')
 def stores_info():
-    headers = ['Id', 'Name', 'Type', 'Address']
-    query = "SELECT Id, Name, Type, Address FROM 'stores'"
-    cursor.execute(query)
-    stores = cursor.fetchall()
-    print(stores)
+    page         = request.args.get('page',        default= 1, type=int)
+    click_id     = request.args.get('id'  ,        default="", type=str)
+    search       = request.args.get('search',      default="", type=str)
+    choice_type  = request.args.get('choice_type', default="", type=str)
 
-    page         = request.args.get('page',         default=1,  type=int)
-    id           = request.args.get('id'  ,         default="", type=str)
-    search_store = request.args.get('search_store', default="", type=str)
-    choice_type  = request.args.get('choice_type',  default="", type=str)
-
-    if search_store:
-        stores = [store for store in stores if search_store in store[1]]
+    query = '''SELECT Id, Name, Type, Address 
+               FROM 'stores'
+               WHERE 1=1
+            '''
+    if search:
+        query += f" AND Name LIKE '%{search}%'"
     if choice_type:
-        stores = [store for store in stores if choice_type in store[2]]
-    if id:
-        storedata = [store for store in stores if id == store[0]]
-      
-        cursor.execute("""SELECT strftime('%Y-%m', orders.OrderAt) AS month, 
-                        SUM('items'.'UnitPrice') AS Revenue
-                        FROM 'orders'
-                        JOIN 'orderitems' ON orders.Id = orderitems.Orderid
-                        JOIN 'items' ON orderitems.ItemId = items.id
-                        WHERE orders.StoreId = ?
-                        GROUP BY strftime('%Y-%m', orders.OrderAt)
-                        """,(id,))
-        monthly_revenue = cursor.fetchall()
+        query += f" AND Type = '{choice_type}'"
+    if click_id:
+        query += f" AND Id = '{click_id}'"
 
-        labels = []
-        revenues = []
+    cursor.execute(query)
+    headers = [data[0] for data in cursor.description]
+    stores = cursor.fetchall()
 
-        for row in monthly_revenue:
-            labels.append(row[0])
-            revenues.append(row[1])
+    #? 통계를 위한 query2 Default 
+    query2 = '''SELECT strftime('%Y-%m', orders.OrderAt) AS month, 
+                SUM('items'.'UnitPrice') AS Revenue
+                FROM 'orders'
+                JOIN 'orderitems' ON orders.Id = orderitems.Orderid
+                JOIN 'items' ON orderitems.ItemId = items.id
+             '''
+    if click_id:
+        #? store(가게)의 월 별 수입 통계를 보여주기 위함
+        query2 += f"WHERE orders.StoreId = '{click_id}'"
 
-        return render_template("click_storeid.html", headers = headers, 
-                               storedata = storedata, storename = stores[0][1],
-                               page = page, search_store=search_store,
-                               monthly_revenue=monthly_revenue, labels=labels, revenues=revenues)
-    
-    cursor.execute("""SELECT strftime('%Y-%m', orders.OrderAt) AS month, 
-                        SUM('items'.'UnitPrice') AS Revenue
-                        FROM 'orders'
-                        JOIN 'orderitems' ON orders.Id = orderitems.Orderid
-                        JOIN 'items' ON orderitems.ItemId = items.id
-                        GROUP BY strftime('%Y-%m', orders.OrderAt)
-                        """)
+    query2 += "GROUP BY strftime('%Y-%m', orders.OrderAt)"
+
+    cursor.execute(query2)
     monthly_revenue = cursor.fetchall()
-    labels = []
-    revenues = []
-    for row in monthly_revenue:
-        labels.append(row[0])
-        revenues.append(row[1])
 
+    # Chart.js 를 위한 인자
+    labels = [row[0] for row in monthly_revenue]
+    revenues = [row[1] for row in monthly_revenue]
+
+    if click_id:
+        return render_template("click_storeid.html", headers = headers, 
+                               storedata = stores[0], page = page, search=search,
+                               monthly_revenue = monthly_revenue, labels = labels, revenues = revenues)
+    
     pagemaker = Pagination()
     pagemaker.makepagination(stores, page)
+    fileReader = File()
+    storetype_list = [row[0] for row in fileReader.read('../8.CRM_Generator/src/store_types.txt')]
 
-    start_index = pagemaker.start_index
-    end_index = pagemaker.end_index
-    total_page = pagemaker.total_page
-    pagination_start = pagemaker.pagination_start
-    pagination_end = pagemaker.pagination_end
-    move_page_front = pagemaker.move_page_front
-    move_page_back = pagemaker.move_page_back
-
-    return render_template("stores.html", headers=headers, stores=stores[start_index : end_index + 1], 
-                           page=page, total_page=total_page, 
-                           pagination_start=pagination_start, pagination_end=pagination_end,
-                           move_page_front=move_page_front, move_page_back=move_page_back,
-                           search_store=search_store, choice_type=choice_type,
-                           monthly_revenue=monthly_revenue, labels=labels, revenues=revenues)
+    return render_template("stores.html", headers = headers, stores = stores[pagemaker.start_index : pagemaker.end_index + 1], 
+                           page=page, total_page = pagemaker.total_page, storetype_list = storetype_list,
+                           pagination_start = pagemaker.pagination_start, pagination_end = pagemaker.pagination_end,
+                           move_page_front = pagemaker.move_page_front, move_page_back = pagemaker.move_page_back,
+                           search = search, choice_type=choice_type,
+                           monthly_revenue = monthly_revenue, labels = labels, revenues = revenues)

@@ -10,54 +10,46 @@ cursor = conn.cursor()
 
 @order_bp.route('/orders')
 def orders_info():
-    # file_rdr = File()
-    # data     = file_rdr.read("./csv/crm_order.csv")
-    # headers  = [header.strip() for header in data[0]]
-    # orders   = data[1:]
-
-    headers = ['Id', 'OrderAt', 'StoreId', 'UserId']
-    query = "SELECT Id, OrderAt, StoreId, UserId FROM 'orders'"
-    cursor.execute(query)
-    orders = cursor.fetchall()
 
     page         = request.args.get('page',         default=1,  type=int)
-    id           = request.args.get('id'  ,         default="", type=str)
-    search_order = request.args.get('search_order', default="", type=str)
-    # choice_date  = request.args.get('choice_date',  default="", type=str)
-
+    click_id     = request.args.get('id'  ,         default="", type=str)
+    search       = request.args.get('search',       default="", type=str)
     choice_year  = request.args.get('choice_year',  default="", type=str)
-    choice_month = request.args.get('choice_month',  default="", type=str)
-    choice_day   = request.args.get('choice_day',  default="", type=str)
+    choice_month = request.args.get('choice_month', default="", type=str)
+    choice_day   = request.args.get('choice_day',   default="", type=str)
     
-    if search_order:
-        orders = [order for order in orders if search_order in order[0]]
+    query = '''SELECT Id, OrderAt, StoreId, UserId 
+               FROM orders
+               WHERE 1=1   
+            '''
+    #? search 는 Order Id 로 찾음
+    if search:
+        query += f" AND Id LIKE '%{search}%'"
     if choice_year:
-        orders = [order for order in orders if choice_year == order[1][0:4]]
+        query += f" AND SUBSTR(OrderAt, 1, 4) = '{choice_year}'"
     if choice_month:
-        orders = [order for order in orders if choice_month == order[1][5:7]]
+        query += f" AND SUBSTR(OrderAt, 6, 2) = '{choice_month}'"
     if choice_day:
-        orders = [order for order in orders if choice_day == order[1][8:10]]
-    if id:
-        orderdata = [order for order in orders if id == order[0]]
+        query += f" AND SUBSTR(OrderAt, 9, 2) = '{choice_day}'"
+    if click_id:
+        query += f" AND Id = '{click_id}'"
+
+    cursor.execute(query)
+    #? 헤더
+    headers = [data[0] for data in cursor.description]
+    orders = cursor.fetchall()
+
+    if click_id:
         return render_template("click_orderid.html", headers = headers, 
-                               orderdata = orderdata, orderat = orders[0][1],
-                               page = page, search_order=search_order)
+                               orderdata = orders[0], page = page, search=search)
     
     pagemaker = Pagination()
     pagemaker.makepagination(orders, page)
-
-    start_index = pagemaker.start_index
-    end_index = pagemaker.end_index
-    total_page = pagemaker.total_page
-    pagination_start = pagemaker.pagination_start
-    pagination_end = pagemaker.pagination_end
-    move_page_front = pagemaker.move_page_front
-    move_page_back = pagemaker.move_page_back
     
     return render_template("orders.html",
-                           headers=headers, orders=orders[start_index : end_index + 1], 
-                           page=page, total_page=total_page, 
-                           pagination_start=pagination_start, pagination_end=pagination_end, 
-                           move_page_front=move_page_front, move_page_back=move_page_back,
-                           search_order=search_order,
+                           headers=headers, orders=orders[pagemaker.start_index : pagemaker.end_index + 1], 
+                           page=page, total_page=pagemaker.total_page, 
+                           pagination_start=pagemaker.pagination_start, pagination_end=pagemaker.pagination_end, 
+                           move_page_front=pagemaker.move_page_front, move_page_back=pagemaker.move_page_back,
+                           search=search,
                            choice_year=choice_year, choice_month=choice_month, choice_day=choice_day)

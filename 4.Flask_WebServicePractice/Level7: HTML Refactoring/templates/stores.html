@@ -35,10 +35,9 @@
             <select name="choice_type" style="margin-right:10px;" >
                 <option value="{{ choice_type }}" selected disabled hidden>카페 선택</option>
                 <option value="">All</option>
-                <option value="스타벅스">스타벅스</option>
-                <option value="투썸">투썸플레이스</option>
-                <option value="커피빈">커피빈</option>
-                <option value="이디야">이디야</option>
+                {% for tp in storetype_list %}
+                    <option value="{{ tp }}">{{ tp }}</option>
+                {% endfor %}
             </select>
             <input type="submit" value="이동">
         </ul>

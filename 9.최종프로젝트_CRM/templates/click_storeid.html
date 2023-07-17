@@ -3,28 +3,25 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ storename }}의 Flask</title>
+    <title>{{ storedata[1] }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <h1>{{ storename }} 상세 정보  <button type="button" class="navyBtn", onclick="location.href='/stores?search_store={{ search_store }}&page={{ page }}'">    뒤로 가기</button></h1>
+    <h1>{{ storedata[1] }}<button type="button" class="navyBtn", onclick="location.href='/stores?search_store={{ search_store }}&page={{ page }}'">    뒤로 가기</button></h1>
     
     <table class="table table-striped">
         <tr class="table-primary">
-            {% for header in headers %}
-                <th>{{ header }}</th>
-            {% endfor %}
-        </tr>
-
-    {% for i in range(storedata | length) %}
-        <tr>
-        {% for j in range(storedata[i] | length) %}
-            <td>{{ storedata[i][j] }}</td>
+        {% for header in headers %}
+            <th>{{ header }}</th>
         {% endfor %}
         </tr>
-    {% endfor %}
+        <tr>
+        {% for i in range(storedata | length) %}
+            <td>{{ storedata[i] }}</td>
+        {% endfor %}
+        </tr>
     </table>
 
     <table style="width: 250px; height:300px;" class="table table-bordered">

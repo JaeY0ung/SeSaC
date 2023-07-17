@@ -30,13 +30,17 @@
     <!-- 사용자 검색 버튼 form 안에 있는 것은 마지막 상태로 넘어간다!-->
     <form method="get">
         <ul class="mt-3" style="display:flex; flex-direction:row; flex-wrap:wrap;">
-            {% if search_store %}
-                <input type="text" name="search_store" style="margin-right:10px;" value="{{ search_store }}">
+            {% if search %}
+                <input type="text" name="search" style="margin-right:10px;" value="{{ search }}">
             {%else %}
-                <input type="text" name="search_store" style="margin-right:10px;" placeholder="상점 정보 입력">
+                <input type="text" name="search" style="margin-right:10px;" placeholder="상점 정보 입력">
             {% endif %}
             <select name="choice_type" style="margin-right:10px;" >
-                <option value="{{ choice_type }}" selected disabled hidden>카페 선택</option>
+                {% if choice_type %}
+                    <option value="{{ choice_type }}" selected disabled hidden>{{ choice_type }}</option>
+                {% else %}
+                    <option value="" selected disabled hidden>카페 선택</option>
+                {% endif %}
                 <option value="">All</option>
                 <option value="스타벅스">스타벅스</option>
                 <option value="투썸">투썸플레이스</option>
@@ -58,7 +62,7 @@
             <tr>
             {% for j in range(stores[i] | length) %}
                 {% if j==0 %}
-                    <td><a href="/stores?id={{ stores[i][0] }}&search_store={{ search_store }}&page={{ page }}">{{ stores[i][0] }}</a></td>
+                    <td><a href="/stores?id={{ stores[i][0] }}&search={{ search }}&page={{ page }}">{{ stores[i][0] }}</a></td>
                 {% else %}
                     <td>{{ stores[i][j] }}</td>
                 {% endif %}
@@ -67,59 +71,50 @@
         {% endfor %}
     </table>
 
-    <table style="width: 250px; height:250px;" class="table table-bordered">
-        <tr class="table-primary">
-            <td>날짜</td>
-            <td>매출액</td>
-        </tr>
-        {% for row in monthly_revenue %}
-        <tr>
-            <td>{{ row[0] }}</td>
-            <td>{{ row[1] }}원</td>
-        </tr>
-        {% endfor %}
-    </table>
 
     <div style="width: 500px;"><canvas id="myChart"></canvas></div>
     
     <script>
-        const ctx = document.getElementById('myChart');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: {{ labels | safe }},
-                datasets: [{
-                    label: '전체 매장의 월간 매출액 총합',
-                    data: {{ revenues | safe }},
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+        // 종경이가 해줌
+        window.addEventListener('load', function(){
+            const ctx = document.getElementById('myChart');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ labels | safe }},
+                    datasets: [{
+                        label: '전체 매장의 월간 매출액 총합',
+                        data: {{ revenues | safe }},
+                        borderWidth: 1
+                    }]
                 },
-                plugins: {
-                    legend: {
-                        display: true,
-                        maxHeight: 30
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            maxHeight: 30
+                        }
                     }
                 }
-            }
-        });
+            });
+        })
     </script>
 
 
     <nav aria-label="Page navigation example">
         <ul class="pagination" style="justify-content : center;">
             {% if move_page_front %}
-                <li  class="page-item"><a class="page-link" href='/stores?search_store={{ search_store }}&page={{ 1 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/stores?search_store={{ search_store }}&page={{ page-5 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&laquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/stores?search={{ search }}&page={{ 1 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/stores?search={{ search }}&page={{ page-5 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&laquo;</span></a></li>
             {% endif %}
             {% for p in range(pagination_start, pagination_end+1) %}
                 
-                <li  class="page-item"><a class="page-link" href='/stores?search_store={{ search_store }}&page={{ p }}&choice_gender={{ choice_gender }}'>
+                <li  class="page-item"><a class="page-link" href='/stores?search={{ search }}&page={{ p }}&choice_type={{ choice_type }}'>
                     {% if page == p %}
                         <strong><mark>
                     {% endif %}
@@ -130,8 +125,8 @@
                 </a></li>
             {% endfor %}
             {% if move_page_back %}
-                <li  class="page-item"><a class="page-link" href='/stores?search_store={{ search_store }}&page={{ page+5 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&raquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/stores?search_store={{ search_store }}&page={{ total_page }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/stores?search={{ search }}&page={{ page+5 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&raquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/stores?search={{ search }}&page={{ total_page }}&choice_type={{ choice_type }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
             {% endif %}
         </ul>
     </nav>

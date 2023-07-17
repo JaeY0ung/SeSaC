@@ -26,7 +26,8 @@
       </nav>
     <!-- 사용자 검색 버튼 form 안에 있는 것은 마지막 상태로 넘어간다!-->
     <form method="get">
-        <input type="text" name="search_orderitem" value="{{ search_orderitem }}" >
+        
+        <input type="text" name="search" value="{{ search }}" >
         <input type="submit" value="이동">
     </form>
     <table class="table table-striped">
@@ -40,7 +41,7 @@
         <tr>
         {% for j in range(orderitems[i] | length) %}
             {% if j==0 %}
-                <td><a href="/orderitems?id={{ orderitems[i][0] }}&search_orderitem={{ search_orderitem }}&page={{ page }}">{{ orderitems[i][0] }}</a></td>
+                <td><a href="/orderitems?id={{ orderitems[i][0] }}&search={{ search }}&page={{ page }}">{{ orderitems[i][0] }}</a></td>
             {% else %}
                 <td>{{ orderitems[i][j] }}</td>
             {% endif %}
@@ -52,12 +53,12 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination" style="justify-content : center;">
             {% if move_page_front %}
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ 1 }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page-5 }}'><span aria-hidden="true">&laquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/orderitems?search={{ search }}&page={{ 1 }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/orderitems?search={{ search }}&page={{ page-5 }}'><span aria-hidden="true">&laquo;</span></a></li>
             {% endif %}
             {% for p in range(pagination_start, pagination_end+1) %}
                 
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ p }}'>
+                <li  class="page-item"><a class="page-link" href='/orderitems?search={{ search }}&page={{ p }}'>
                     {% if page == p %}
                         <strong><mark >
                     {% endif %}
@@ -68,8 +69,8 @@
                 </a></li>
             {% endfor %}
             {% if move_page_back %}
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ page+5 }}'><span aria-hidden="true">&raquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/orderitems?search_orderitem={{ search_orderitem }}&page={{ total_page }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/orderitems?search={{ search }}&page={{ page+5 }}'><span aria-hidden="true">&raquo;</span></a></li>
+                <li  class="page-item"><a class="page-link" href='/orderitems?search={{ search }}&page={{ total_page }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
             {% endif %}
         </ul>
     </nav>

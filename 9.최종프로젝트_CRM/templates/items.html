@@ -27,13 +27,14 @@
     <!-- 사용자 검색 버튼 form 안에 있는 것은 마지막 상태로 넘어간다!-->
     <form method="get">
         <ul class="mt-3" style="display:flex; flex-direction:row; flex-wrap:wrap;">
-            <input type="text" name="search_item" value="{{ search_item }}" style="margin-right:10px;">
+            <input type="text" name="search" value="{{ search }}" style="margin-right:10px;">
             <select name="choice_type" style="margin-right:10px;" >
-                <option value="{{ choice_type }}" selected disabled hidden>음료/디저트 종류</option>
                 {% if choice_type %}
-                    <option value="" selected disabled hidden >{{ choice_type }}</option>
+                    <option value="{{ choice_type }}" selected hidden >{{ choice_type }}</option>
+                {% else %}
+                    <option value="" selected disabled hidden>음료/디저트 종류</option>
                 {% endif %}
-                <option value=""      >All</option>
+                <option value="">All</option>
                 <option value="Coffee">Coffee</option>
                 <option value="Juice" >Juice</option>
                 <option value="Cake"  >Cake</option>
@@ -53,7 +54,7 @@
         <tr>
         {% for j in range(items[i] | length) %}
             {% if j==0 %}
-                <td><a href="/items?id={{ items[i][0] }}&search_item={{ search_item }}&page={{ page }}">{{ items[i][0] }}</a></td>
+                <td><a href="/items?id={{ items[i][0] }}&search={{ search }}&page={{ page }}">{{ items[i][0] }}</a></td>
             {% else %}
                 <td>{{ items[i][j] }}</td>
             {% endif %}
@@ -65,12 +66,12 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination" style="justify-content : center;">
             {% if move_page_front %}
-                <li  class="page-item"><a class="page-link" href='/items?search_item={{ search_item }}&page={{ 1 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/items?search_item={{ search_item }}&page={{ page-5 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&laquo;</span></a></li>
+                <li class="page-item"><a class="page-link" href='/items?search={{ search }}&page={{ 1 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
+                <li class="page-item"><a class="page-link" href='/items?search={{ search }}&page={{ page-5 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&laquo;</span></a></li>
             {% endif %}
             {% for p in range(pagination_start, pagination_end+1) %}
                 
-                <li  class="page-item"><a class="page-link" href='/items?search_item={{ search_item }}&page={{ p }}&choice_type={{ choice_type }}'>
+                <li class="page-item"><a class="page-link" href='/items?search={{ search }}&page={{ p }}&choice_type={{ choice_type }}'>
                     {% if page == p %}
                         <strong><mark >
                     {% endif %}
@@ -81,8 +82,8 @@
                 </a></li>
             {% endfor %}
             {% if move_page_back %}
-                <li  class="page-item"><a class="page-link" href='/items?search_item={{ search_item }}&page={{ page+5 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&raquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/items?search_item={{ search_item }}&page={{ total_page }}&choice_type={{ choice_type }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
+                <li class="page-item"><a class="page-link" href='/items?search={{ search }}&page={{ page+5 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&raquo;</span></a></li>
+                <li class="page-item"><a class="page-link" href='/items?search={{ search }}&page={{ total_page }}&choice_type={{ choice_type }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
             {% endif %}
         </ul>
     </nav>
