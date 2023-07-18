@@ -32,7 +32,8 @@ def stores_info():
 
     #? 통계를 위한 query2 Default 
     query2 = '''SELECT strftime('%Y-%m', orders.OrderAt) AS month, 
-                SUM('items'.'UnitPrice') AS Revenue
+                       SUM('items'.'UnitPrice') AS Revenue,
+                       COUNT('items') AS ItemCount
                 FROM 'orders'
                 JOIN 'orderitems' ON orders.Id = orderitems.Orderid
                 JOIN 'items' ON orderitems.ItemId = items.id
@@ -49,11 +50,13 @@ def stores_info():
     # Chart.js 를 위한 인자
     labels = [row[0] for row in monthly_revenue]
     revenues = [row[1] for row in monthly_revenue]
-
+    itemCount = [row[2] for row in monthly_revenue]
+    
     if click_id:
         return render_template("click_storeid.html", headers = headers, 
                                storedata = stores[0], page = page, search=search,
-                               monthly_revenue = monthly_revenue, labels = labels, revenues = revenues)
+                               monthly_revenue = monthly_revenue, labels = labels, 
+                               revenues = revenues, itemCount = itemCount)
     
     pagemaker = Pagination()
     pagemaker.makepagination(stores, page)
