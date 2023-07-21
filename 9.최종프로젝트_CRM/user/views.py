@@ -14,6 +14,7 @@ def users_info():
     click_id      = request.args.get('id'  ,          default="", type=str)
     search        = request.args.get('search',        default="", type=str)
     choice_gender = request.args.get('choice_gender', default="", type=str)
+    genders = [['', '공통'], ['Male', '남자'], ['Female', '여자']]
 
     query = '''SELECT Id, Name, Birthdate, Gender, Age, Address 
                FROM users
@@ -35,6 +36,7 @@ def users_info():
     headers = [data[0] for data in cursor.description]
     users = cursor.fetchall()
 
+    #? 테이블과 그래프를 위한 쿼리문
     query2 = f'''SELECT s.Name AS Name, SUM(i.UnitPrice) AS TotalSpend, COUNT(o.Id) AS Count
                 FROM users      u
                 JOIN orders     o  ON u.id      = o.UserId
@@ -47,31 +49,33 @@ def users_info():
     cursor.execute(query2)
     static_headers = [data[0] for data in cursor.description]
     static = cursor.fetchall()
-    print(static)
+    # print(static)
 
     if click_id:
-        return render_template("click_userid.html", headers = headers, 
-                               userdata = users[0], page = page, 
+        return render_template("click_userid.html", headers = headers, userdata = users[0], 
                                search = search, static = static, static_headers = static_headers)
 
     # 검색 단어 하이라이팅
-    highlight_index = [[0,0] for _ in users]
+    
     if search:
         highlight_index = []
         for user in users:
             name = user[1]
+            print(f'이름: {name}')
             l = len(search)
             for i in range(len(name) - l + 1):
                 if search == name[i : i + l]:
                     highlight_index.append( (i, i + l - 1) )
                     break
+    else:
+        highlight_index = [[0,0] for _ in users]
 
     pagemaker = Pagination()
     pagemaker.makepagination(users, page)
+    print(highlight_index)
     
-    return render_template("users.html",
-                           headers=headers, users=users[pagemaker.start_index : pagemaker.end_index + 1],
-                           page=page, total_page=pagemaker.total_page,
-                           pagination_start=pagemaker.pagination_start, pagination_end=pagemaker.pagination_end,
-                           move_page_front=pagemaker.move_page_front, move_page_back=pagemaker.move_page_back,
-                           search=search, choice_gender=choice_gender, highlight_index=highlight_index)
+    return render_template("users.html", headers = headers, datas = users[pagemaker.start_index : pagemaker.end_index + 1],
+                           page = page, total_page = pagemaker.total_page, genders = genders, search = search,
+                           pagination_start = pagemaker.pagination_start, pagination_end = pagemaker.pagination_end,
+                           move_page_front = pagemaker.move_page_front, move_page_back = pagemaker.move_page_back,
+                           choice_gender = choice_gender, highlight_index = highlight_index)

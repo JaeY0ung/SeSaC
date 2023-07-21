@@ -1,82 +1,67 @@
-{% extends "layout.html" %}
+{% extends './layout.html' %}
+
 
 {% block title %}
-유저
+    users
 {% endblock %}
 
 
-{% block list %}
-{% for i in range(users | length) %}
-    {% set user = users[i] %}
-    <tr>
-    {% for j in range(user | length) %}
-        {% if j==0 %}
-            <td><a href="/users?id={{ user[0] }}&search={{ search }}&page={{ page }}">{{ user[0] }}</a></td>
-        {% elif j==1 %}
-            <td>
-                {% if search %}
-                    {% set start = highlight_index[i][0] %}
-                    {% set end = highlight_index[i][1] %}
-                    {{ user[j][0:start] }}<mark>{{ user[j][start:end+1] }}</mark>{{ user[j][end+1:] }}
-                {% else %}
-                    {{ user[j] }}
-                {% endif %}
-            </td>
-        {% else %}
-            <td>{{ user[j] }}</td>
-        {% endif %}
+{% block input_text %}
+    {% if search %}
+        <input type="text" name="search" value="{{ search }}" style="margin-right:10px">
+    {% else %}
+        <input type="text" name="search" placeholder="이름을 입력하세요" style="margin-right:10px;">
+    {% endif %}
+{% endblock %}
+
+
+{% block select_option %}
+    <select name="choice_gender" style="margin-right:10px;" >
+        <option value="{{ choice_gender }}" selected disabled hidden>성별</option>
+        {% for g in genders %}
+            <option value="{{ g[0] }}">{{ g[1] }}</option>
+        {% endfor %}
+    </select>
+{% endblock %}
+
+
+{% block input_submit %}
+    <input type="submit" value="이동">
+{% endblock %}
+
+
+{% block headers %}
+    {% for header in headers %}
+    <th>{{ header }}</th>
     {% endfor %}
-    </tr>
-{% endfor %}
 {% endblock %}
 
 
-{% block ul_pagination %}
-<div class="d-flex justify-content-center">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            {% if move_page_front %}
-                <li  class="page-item"><a class="page-link" href='/users?search={{ search }}&page={{ 1 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/users?search={{ search }}&page={{ page-5 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&laquo;</span></a></li>
-            {% endif %}
-            {% for p in range(pagination_start, pagination_end+1) %}
-                
-                <li  class="page-item"><a class="page-link" href='/users?search={{ search }}&page={{ p }}&choice_gender={{ choice_gender }}'>
-                    {% if page == p %}
-                        <strong><mark>
+{% block click %}
+    {% for i in range(datas | length) %}
+    {% set data = datas[i] %}
+        <tr>
+            {% for j in range(data | length) %}
+                {% if j == 0 %}
+                    <td>
+                        <a href="/users?id={{ data[0] }}&search={{ search }}">{{ data[0] }}</a>
+                    </td>
+                {% elif j == 1 %}
+                    {% if search %}
+                        {% set start = highlight_index[i][0] %}
+                        {% set end = highlight_index[i][1] %}
+                        <td>{{ data[j][0:start] }}<mark>{{ data[j][start:end+1] }}</mark>{{ data[j][end+1:] }}</td>
+                    {% else %}
+                        <td>{{ data[j] }}</td>
                     {% endif %}
-                    {{ p }}
-                    {% if page == p %}
-                        </strong></mark>
-                    {% endif %}
-                </a></li>
+                {% else %}
+                    <td>{{ data[j] }}</td>
+                {% endif %}
             {% endfor %}
-            {% if move_page_back %}
-                <li  class="page-item"><a class="page-link" href='/users?search={{ search }}&page={{ page+5 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&raquo;</span></a></li>
-                <li  class="page-item"><a class="page-link" href='/users?search={{ search }}&page={{ total_page }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
-            {% endif %}
-        </ul>
-    </nav>
-</div>
+        </tr>
+    {% endfor %}
 {% endblock %}
 
-
-{% block form %}
-<form method="get">
-    <ul class="mt-3" style="display:flex; flex-direction:row; flex-wrap:wrap;">
-        {% if search %}
-            <input type="text" name="search" value="{{ search }}" style="margin-right:10px">
-        {% else %}
-            <input type="text" name="search" placeholder="이름을 입력하세요" style="margin-right:10px;">
-        {% endif %}
-
-        <select name="choice_gender" style="margin-right:10px;" >
-            <option value="{{ choice_gender }}" selected disabled hidden>성별</option>
-            <option value="">공통</option>
-            <option value="Male">남성</option>
-            <option value="Female">여성</option>
-        </select>
-        <input type="submit" value="이동">
-    </ul>
-</form>
-{% endblock %}
+{% block pagination %}
+    {{ super() }}
+{% endblock%}
