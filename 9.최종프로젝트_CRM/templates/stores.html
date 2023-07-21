@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>스토어</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .flex-container {
+            display: flex;
+            height: 600px;
+            text-align: center;
+        }
+        .mg-r {
+            margin-right: 50px;
+        }
+    </style>
 </head>
 
 <body>
@@ -70,38 +80,75 @@
         {% endfor %}
     </table>
 
-
-    <div style="width: 500px;"><canvas id="myChart"></canvas></div>
+    <div class="flex-container">
+        <div class="mg-r table-primary">
+            <table class="table table-bordered">
+                <tr class="table-primary">
+                    <td>날짜</td>
+                    <td>매출액</td>
+                    <td>판매 물품량</td>
+                </tr>
+                {% for row in monthly_revenue %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}원</td>
+                    <td>{{ row[2] }}개</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>
+            <div style = "width: 900px;">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
     
     <script>
-        // 종경이가 해줌
-        window.addEventListener('load', function(){
-            const ctx = document.getElementById('myChart');
-            new Chart(ctx, {
+        const ctx = document.getElementById('myChart');
+        const mixedChart = new Chart(ctx, {
+            data: {
+              datasets: [{
                 type: 'bar',
-                data: {
-                    labels: {{ labels | safe }},
-                    datasets: [{
-                        label: '전체 매장의 월간 매출액 총합',
-                        data: {{ revenues | safe }},
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                label: 'Revenues',
+                yAxisID: 'y-left',
+                data: {{ revenues | safe }},
+                order: 2
+              }, {
+                type: 'line',
+                label: 'Item Count',
+                yAxisID: 'y-right',
+                data: {{ itemCounts | safe }},
+                order: 1
+              }],
+                labels: {{ labels | safe }}
+            },
+            options: {
+                responsive:true,
+                // maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '연/월'
                         }
                     },
-                    plugins: {
-                        legend: {
+                  
+                    'y-right': {
+                        type: 'linear',
+                        position: 'right',
+                        title: {
                             display: true,
-                            maxHeight: 30
+                            text: 'ItemCount 단위'
+                        },
+                        grid: {
+                            display: false
                         }
                     }
                 }
-            });
-        })
+            }
+        });
+       
     </script>
 
 

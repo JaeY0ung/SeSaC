@@ -50,13 +50,13 @@ def stores_info():
     # Chart.js 를 위한 인자
     labels = [row[0] for row in monthly_revenue]
     revenues = [row[1] for row in monthly_revenue]
-    itemCount = [row[2] for row in monthly_revenue]
+    itemCounts = [row[2] for row in monthly_revenue]
     
     if click_id:
         return render_template("click_storeid.html", headers = headers, 
                                storedata = stores[0], page = page, search=search,
                                monthly_revenue = monthly_revenue, labels = labels, 
-                               revenues = revenues, itemCount = itemCount)
+                               revenues = revenues, itemCounts = itemCounts)
     
     pagemaker = Pagination()
     pagemaker.makepagination(stores, page)
@@ -68,4 +68,5 @@ def stores_info():
                            pagination_start = pagemaker.pagination_start, pagination_end = pagemaker.pagination_end,
                            move_page_front = pagemaker.move_page_front, move_page_back = pagemaker.move_page_back,
                            search = search, choice_type=choice_type,
-                           monthly_revenue = monthly_revenue, labels = labels, revenues = revenues)
+                           monthly_revenue = monthly_revenue, labels = labels, 
+                           revenues = revenues, itemCounts = itemCounts)

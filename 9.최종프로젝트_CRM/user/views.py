@@ -35,9 +35,24 @@ def users_info():
     headers = [data[0] for data in cursor.description]
     users = cursor.fetchall()
 
+    query2 = f'''SELECT s.Name AS Name, SUM(i.UnitPrice) AS TotalSpend, COUNT(o.Id) AS Count
+                FROM users      u
+                JOIN orders     o  ON u.id      = o.UserId
+                JOIN orderitems oi ON o.Id      = oi.OrderId
+                JOIN stores     s  ON o.StoreId = s.Id
+                JOIN items      i  ON oi.ItemId = i.Id
+                WHERE u.id = '{click_id}'
+                GROUP BY o.Id
+             '''
+    cursor.execute(query2)
+    static_headers = [data[0] for data in cursor.description]
+    static = cursor.fetchall()
+    print(static)
+
     if click_id:
         return render_template("click_userid.html", headers = headers, 
-                               userdata = users[0], page = page, search=search)
+                               userdata = users[0], page = page, 
+                               search = search, static = static, static_headers = static_headers)
 
     # 검색 단어 하이라이팅
     highlight_index = [[0,0] for _ in users]
