@@ -1,10 +1,6 @@
 {% extends './layout.html' %}
 
-
-{% block title %}
-    users
-{% endblock %}
-
+{% block title %}users{% endblock %}
 
 {% block input_text %}
     {% if search %}
@@ -13,7 +9,6 @@
         <input type="text" name="search" placeholder="이름을 입력하세요" style="margin-right:10px;">
     {% endif %}
 {% endblock %}
-
 
 {% block select_option %}
     <select name="choice_gender" style="margin-right:10px;" >
@@ -24,18 +19,9 @@
     </select>
 {% endblock %}
 
+{% block input_submit %}{{ super() }}{% endblock %}
 
-{% block input_submit %}
-    <input type="submit" value="이동">
-{% endblock %}
-
-
-{% block headers %}
-    {% for header in headers %}
-    <th>{{ header }}</th>
-    {% endfor %}
-{% endblock %}
-
+{% block headers %}{{ super() }}{% endblock %}
 
 {% block click %}
     {% for i in range(datas | length) %}
@@ -63,5 +49,24 @@
 {% endblock %}
 
 {% block pagination %}
-    {{ super() }}
+    {% if move_page_front %}
+        <li class="page-item"><a class="page-link" href='/users?search={{ search }}&page={{ 1 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&laquo;&laquo;</span></a></li>
+        <li class="page-item"><a class="page-link" href='/users?search={{ search }}&page={{ page-5 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&laquo;</span></a></li>
+    {% endif %}
+    {% for p in range(pagination_start, pagination_end+1) %}
+        
+        <li class="page-item"><a class="page-link" href='/users?search={{ search }}&page={{ p }}&choice_gender={{ choice_gender }}'>
+            {% if page == p %}
+                <strong><mark>
+            {% endif %}
+            {{ p }}
+            {% if page == p %}
+                </strong></mark>
+            {% endif %}
+        </a></li>
+    {% endfor %}
+    {% if move_page_back %}
+        <li class="page-item"><a class="page-link" href='/users?search={{ search }}&page={{ page+5 }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&raquo;</span></a></li>
+        <li class="page-item"><a class="page-link" href='/users?search={{ search }}&page={{ total_page }}&choice_gender={{ choice_gender }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
+    {% endif %}
 {% endblock%}

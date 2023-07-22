@@ -14,12 +14,13 @@ def users_info():
     click_id      = request.args.get('id'  ,          default="", type=str)
     search        = request.args.get('search',        default="", type=str)
     choice_gender = request.args.get('choice_gender', default="", type=str)
-    genders = [['', '공통'], ['Male', '남자'], ['Female', '여자']]
+    genders       = [['', '공통'], ['Male', '남자'], ['Female', '여자']]
 
     query = '''SELECT Id, Name, Birthdate, Gender, Age, Address 
                FROM users
                WHERE 1=1
             '''
+    
     if search: 
         #? 중요: like 는 따옴표 써야 한다!
         #? 중요: 공백 있어야 한다!
