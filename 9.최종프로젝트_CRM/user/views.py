@@ -48,13 +48,18 @@ def users_info():
                 GROUP BY o.Id
              '''
     cursor.execute(query2)
-    static_headers = [data[0] for data in cursor.description]
-    static = cursor.fetchall()
-    # print(static)
+    statistic_headers = [data[0] for data in cursor.description]
+    statistic = cursor.fetchall()
+    # print(statistic)
 
     if click_id:
-        return render_template("user_detail.html", headers = headers, userdata = users[0], 
-                               search = search, static = static, static_headers = static_headers)
+        shopname   = [s[0] for s in statistic]
+        totalspend = [s[1] for s in statistic]
+        count      = [s[2] for s in statistic]
+    
+        return render_template("user_detail.html", headers = headers, data = users[0], 
+                               search = search, statistic = statistic, statistic_headers = statistic_headers,
+                               shopname = shopname, totalspend = totalspend, count = count)
 
     # 검색 단어 하이라이팅
     

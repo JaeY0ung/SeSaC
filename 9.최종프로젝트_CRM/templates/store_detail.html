@@ -1,59 +1,53 @@
 {% extends './components/detail_layout.html' %}
 
-{% block title %}
-    {{ data[1] }}
-{% endblock %}
+{% block title %}'{{ data[1] }}'의 정보{% endblock %}
 
 {% block go_back %}
-    <button type="button" class="navyBtn button_back", onclick="location.href='/stores?search_store={{ search_store }}&page={{ page }}'">
-        뒤로 가기
-    </button>
+    <button type="button" class="navyBtn button_back", onclick="location.href='/stores?search_store={{ search_store }}&page={{ page }}'">뒤로 가기</button>
 {% endblock %}
 
 {% block statistic_table %}
-    <div class="flex-container">
-        <div class="mg-r">
-            <table style="height: 500px;" class="table table-bordered">
-                <tr class="table-primary">
-                    <td>날짜</td>
-                    <td>매출액</td>
-                    <td>판매 물품량</td>
-                </tr>
-                {% for row in monthly_revenue %}
-                <tr>
-                    <td>{{ row[0] }}</td>
-                    <td>{{ row[1] }}원</td>
-                    <td>{{ row[2] }}개</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <div>
-            <div style = "width: 1000px;">
-                <canvas id="myChart"></canvas>
-            </div>
-        </div>
-    </div>
+    <table style="height: 500px;" class="table table-bordered">
+        <tr class="table-primary">
+            <td>날짜</td>
+            <td>매출액</td>
+            <td>판매 물품량</td>
+        </tr>
+        {% for row in monthly_revenue %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}원</td>
+            <td>{{ row[2] }}개</td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
     
 {% block statistic_chart %}
+    <div style = "width: 1000px;">
+        <canvas id="myChart"></canvas>
+    </div>
+{% endblock %}
+
+
+{% block statistic_drawing %}
     <script>
         const ctx = document.getElementById('myChart');
         const mixedChart = new Chart(ctx, {
             data: {
-              datasets: [{
+            datasets: [{
                 type: 'bar',
                 label: 'Revenues',
                 yAxisID: 'y-left',
                 data: {{ revenues | safe }},
                 order: 2
-              }, {
+            }, {
                 type: 'line',
                 label: 'Item Count',
                 yAxisID: 'y-right',
                 data: {{ itemCounts | safe }},
                 order: 1
-              }],
+            }],
                 labels: {{ labels | safe }}
             },
             options: {
@@ -66,7 +60,7 @@
                             text: '연/월'
                         }
                     },
-                  
+                
                     'y-right': {
                         type: 'linear',
                         position: 'right',

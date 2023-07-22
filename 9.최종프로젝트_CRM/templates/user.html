@@ -1,6 +1,8 @@
 {% extends './components/layout.html' %}
 
+
 {% block title %}users{% endblock %}
+
 
 {% block input_text %}
     {% if search %}
@@ -9,6 +11,7 @@
         <input type="text" name="search" placeholder="이름을 입력하세요" style="margin-right:10px;">
     {% endif %}
 {% endblock %}
+
 
 {% block select_option %}
     <select name="choice_gender" style="margin-right:10px;" >
@@ -19,9 +22,10 @@
     </select>
 {% endblock %}
 
-{% block input_submit %}{{ super() }}{% endblock %}
 
+{% block input_submit %}{{ super() }}{% endblock %}
 {% block headers %}{{ super() }}{% endblock %}
+
 
 {% block click %}
     {% for i in range(datas | length) %}
@@ -47,6 +51,7 @@
         </tr>
     {% endfor %}
 {% endblock %}
+
 
 {% block pagination %}
     {% if move_page_front %}
