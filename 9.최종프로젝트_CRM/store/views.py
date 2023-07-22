@@ -53,9 +53,10 @@ def stores_info():
     itemCounts = [row[2] for row in monthly_revenue]
     
     if click_id:
-        return render_template("click_storeid.html", headers = headers, 
-                               storedata = stores[0], page = page, search=search,
-                               monthly_revenue = monthly_revenue, labels = labels, 
+        print(stores[0])
+        return render_template("store_detail.html", headers = headers, 
+                               data = stores[0], page = page, search = search,
+                               labels = labels, monthly_revenue = monthly_revenue, 
                                revenues = revenues, itemCounts = itemCounts)
     
     pagemaker = Pagination()
@@ -63,10 +64,9 @@ def stores_info():
     fileReader = File()
     storetype_list = [row[0] for row in fileReader.read('../8.CRM_Generator/src/store_types.txt')]
 
-    return render_template("stores.html", headers = headers, stores = stores[pagemaker.start_index : pagemaker.end_index + 1], 
-                           page=page, total_page = pagemaker.total_page, storetype_list = storetype_list,
+    return render_template("store.html", headers = headers, datas = stores[pagemaker.start_index : pagemaker.end_index + 1], 
+                           page = page, total_page = pagemaker.total_page, storetype_list = storetype_list,
                            pagination_start = pagemaker.pagination_start, pagination_end = pagemaker.pagination_end,
                            move_page_front = pagemaker.move_page_front, move_page_back = pagemaker.move_page_back,
-                           search = search, choice_type=choice_type,
-                           monthly_revenue = monthly_revenue, labels = labels, 
-                           revenues = revenues, itemCounts = itemCounts)
+                           search = search, choice_type = choice_type,
+                           monthly_revenue = monthly_revenue, labels = labels, revenues = revenues, itemCounts = itemCounts)

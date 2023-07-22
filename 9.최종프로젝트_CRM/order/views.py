@@ -40,16 +40,16 @@ def orders_info():
     orders = cursor.fetchall()
 
     if click_id:
-        return render_template("click_orderid.html", headers = headers, 
-                               orderdata = orders[0], page = page, search=search)
+        return render_template("order_detail.html", headers = headers, 
+                               data = orders[0], page = page, search=search)
     
     pagemaker = Pagination()
     pagemaker.makepagination(orders, page)
     
-    return render_template("orders.html",
-                           headers=headers, orders=orders[pagemaker.start_index : pagemaker.end_index + 1], 
-                           page=page, total_page=pagemaker.total_page, 
-                           pagination_start=pagemaker.pagination_start, pagination_end=pagemaker.pagination_end, 
-                           move_page_front=pagemaker.move_page_front, move_page_back=pagemaker.move_page_back,
-                           search=search,
-                           choice_year=choice_year, choice_month=choice_month, choice_day=choice_day)
+    return render_template("order.html",
+                           headers = headers, datas = orders[pagemaker.start_index : pagemaker.end_index + 1], 
+                           page = page, total_page = pagemaker.total_page, 
+                           pagination_start = pagemaker.pagination_start, pagination_end = pagemaker.pagination_end, 
+                           move_page_front = pagemaker.move_page_front, move_page_back = pagemaker.move_page_back,
+                           search = search,
+                           choice_year = choice_year, choice_month = choice_month, choice_day = choice_day)

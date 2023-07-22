@@ -53,7 +53,7 @@ def users_info():
     # print(static)
 
     if click_id:
-        return render_template("click_userid.html", headers = headers, userdata = users[0], 
+        return render_template("user_detail.html", headers = headers, userdata = users[0], 
                                search = search, static = static, static_headers = static_headers)
 
     # 검색 단어 하이라이팅
@@ -75,7 +75,7 @@ def users_info():
     pagemaker.makepagination(users, page)
     print(highlight_index)
     
-    return render_template("users.html", headers = headers, datas = users[pagemaker.start_index : pagemaker.end_index + 1],
+    return render_template("user.html", headers = headers, datas = users[pagemaker.start_index : pagemaker.end_index + 1],
                            page = page, total_page = pagemaker.total_page, genders = genders, search = search,
                            pagination_start = pagemaker.pagination_start, pagination_end = pagemaker.pagination_end,
                            move_page_front = pagemaker.move_page_front, move_page_back = pagemaker.move_page_back,

@@ -1,4 +1,4 @@
-{% extends './layout.html' %}
+{% extends './components/layout.html' %}
 
 {% block title %}주문한 물품{% endblock %}
 
@@ -17,13 +17,13 @@
 {% block headers %}{{ super() }}{% endblock %}
 
 {% block click %}
-    {% for i in range(orderitems | length) %}
+    {% for i in range(datas | length) %}
         <tr>
-            {% for j in range(orderitems[i] | length) %}
+            {% for j in range(datas[i] | length) %}
                 {% if j==0 %}
-                    <td><a href="/orderitems?id={{ orderitems[i][0] }}&search={{ search }}&page={{ page }}">{{ orderitems[i][0] }}</a></td>
+                    <td><a href="/orderitems?id={{ datas[i][0] }}&search={{ search }}&page={{ page }}">{{ datas[i][0] }}</a></td>
                 {% else %}
-                    <td>{{ orderitems[i][j] }}</td>
+                    <td>{{ datas[i][j] }}</td>
                 {% endif %}
             {% endfor %}
         </tr>

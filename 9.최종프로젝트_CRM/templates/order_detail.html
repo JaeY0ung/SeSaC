@@ -1,0 +1,11 @@
+{% extends './components/detail_layout.html' %}
+
+{% block title %}
+    주문 시간:{{ data[1] }}
+{% endblock %}
+
+{% block go_back %}
+    <button type="button" class="navyBtn", onclick="location.href='/orders?search_order={{ search_order }}&page={{ page }}'">
+        뒤로 가기
+    </button>
+{% endblock %}

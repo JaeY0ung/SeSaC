@@ -29,15 +29,12 @@ def orderitems_info():
     orderitems = cursor.fetchall()
 
     if click_id:
-        return render_template("click_orderitemid.html", headers = headers, 
-                               orderitemdata = orderitems[0],
-                               page = page, search = search)
+        return render_template("orderitem_detail.html", headers = headers, data = orderitems[0], page = page, search = search)
     
     pagemaker = Pagination()
     pagemaker.makepagination(orderitems, page)
 
-    return render_template("orderitems.html",
-                           headers = headers, orderitems = orderitems[pagemaker.start_index : pagemaker.end_index + 1], 
+    return render_template("orderitem.html", headers = headers, datas = orderitems[pagemaker.start_index : pagemaker.end_index + 1], 
                            page = page, total_page = pagemaker.total_page, 
                            pagination_start = pagemaker.pagination_start, pagination_end = pagemaker.pagination_end,
                            move_page_front = pagemaker.move_page_front, move_page_back = pagemaker.move_page_back,

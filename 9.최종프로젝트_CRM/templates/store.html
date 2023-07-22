@@ -1,4 +1,4 @@
-{% extends './layout.html' %}
+{% extends './components/layout.html' %}
 
 {% block title %}스토어{% endblock %}
 
@@ -29,13 +29,14 @@
 {% block headers %}{{ super() }}{% endblock %}
 
 {% block click %}
-    {% for i in range(stores | length) %}
+    {% for i in range(datas | length) %}
+        {% set data = datas[i] %}
         <tr>
-        {% for j in range(stores[i] | length) %}
+        {% for j in range(data | length) %}
             {% if j==0 %}
-                <td><a href="/stores?id={{ stores[i][0] }}&search={{ search }}&page={{ page }}">{{ stores[i][0] }}</a></td>
+                <td><a href="/stores?id={{ data[0] }}&search={{ search }}&page={{ page }}">{{ data[0] }}</a></td>
             {% else %}
-                <td>{{ stores[i][j] }}</td>
+                <td>{{ data[j] }}</td>
             {% endif %}
         {% endfor %}
         </tr>
@@ -60,8 +61,8 @@
         </a></li>
     {% endfor %}
     {% if move_page_back %}
-        <li  class="page-item"><a class="page-link" href='/stores?search={{ search }}&page={{ page+5 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&raquo;</span></a></li>
-        <li  class="page-item"><a class="page-link" href='/stores?search={{ search }}&page={{ total_page }}&choice_type={{ choice_type }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
+        <li class="page-item"><a class="page-link" href='/stores?search={{ search }}&page={{ page+5 }}&choice_type={{ choice_type }}'><span aria-hidden="true">&raquo;</span></a></li>
+        <li class="page-item"><a class="page-link" href='/stores?search={{ search }}&page={{ total_page }}&choice_type={{ choice_type }}'><span aria-hidden="true">&raquo;&raquo;</span></a></li>
     {% endif %}
 {% endblock%}
 

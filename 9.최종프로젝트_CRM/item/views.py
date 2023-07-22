@@ -31,14 +31,14 @@ def items_info():
     items = cursor.fetchall()
 
     if click_id:
-        return render_template("click_itemid.html", headers = headers, 
-                               itemdata = items[0], page = page, search=search)
+        return render_template("item_detail.html", headers = headers, 
+                               data = items[0], page = page, search=search)
 
     pagemaker = Pagination()
     pagemaker.makepagination(items, page)
     
-    return render_template("items.html",
-                           headers = headers, items = items[pagemaker.start_index : pagemaker.end_index + 1], 
+    return render_template("item.html",
+                           headers = headers, datas = items[pagemaker.start_index : pagemaker.end_index + 1], 
                            page = page, total_page = pagemaker.total_page, 
                            pagination_start = pagemaker.pagination_start, pagination_end = pagemaker.pagination_end, 
                            move_page_front = pagemaker.move_page_front, move_page_back = pagemaker.move_page_back,

@@ -1,4 +1,4 @@
-{% extends './layout.html' %}
+{% extends './components/layout.html' %}
 
 {% block title %}아이템{% endblock %}
 
@@ -29,13 +29,13 @@
 {% block headers %}{{ super() }}{% endblock %}
 
 {% block click %}
-    {% for i in range(items | length) %}
+    {% for i in range(datas | length) %}
         <tr>
-            {% for j in range(items[i] | length) %}
+            {% for j in range(datas[i] | length) %}
                 {% if j==0 %}
-                    <td><a href="/items?id={{ items[i][0] }}&search={{ search }}&page={{ page }}">{{ items[i][0] }}</a></td>
+                    <td><a href="/items?id={{ datas[i][0] }}&search={{ search }}&page={{ page }}">{{ datas[i][0] }}</a></td>
                 {% else %}
-                    <td>{{ items[i][j] }}</td>
+                    <td>{{ datas[i][j] }}</td>
                 {% endif %}
             {% endfor %}
         </tr>
