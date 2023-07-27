@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 app.instance_path = os.getcwd()
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./user-sample.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user-sample.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.debug = True
 
@@ -46,10 +46,10 @@ class Order(db.Model):
     #? 테이블 이름 정의 (옵션)
     __tablename__ = 'orders'
     #? 컬럼 셋업
-    id = db.Column(db.String(64), primary_key=True)
+    id      = db.Column(db.String(64), primary_key=True)
     orderat = db.Column(db.String(32))
     storeid = db.Column(db.String(64), db.ForeignKey('stores.id'))
-    userid = db.Column(db.String(64), db.ForeignKey('users.id'))
+    userid  = db.Column(db.String(64), db.ForeignKey('users.id'))
 
     def __repr__(self):
         return f'<Order {self.id}, {self.orderat}'

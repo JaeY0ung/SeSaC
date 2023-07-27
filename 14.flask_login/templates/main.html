@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<body>
+    <div>
+        {% if current_user.is_authenticated %}
+            <div>
+                <h1>안녕하세요, {{ current_user.username }}님</h1>
+                <!--? 프로필 수정 버튼 추가하기 -->
+                <a href="/profile_edit">프로필 수정하기</a>
+                <a href="/logout">로그아웃하기</a>
+                <a href="/withdrawal">회원탈퇴하기</a>
+                <a href="/users">모든 유저 정보 보기</a>
+            </div>
+            
+        {% else %}
+            <h1>로그인</h1>
+            <form action="{{ url_for('login') }}" method="post">
+                <label>아이디: <input type="text" name="username" required></label>
+                <label>비밀번호: <input type="password" name="password" required></label>
+                <input type="submit" value="submit">
+            </form>
+            <a href="/register">회원가입</a>
+        {% endif %}
+    </div>
+</body>
+</html>
