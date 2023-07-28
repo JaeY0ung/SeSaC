@@ -53,7 +53,7 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         # 2. DB에서 쿼리로 맞는지 id, pw 확인
-        user = User.query.filter(User.username==username).first()
+        user = User.query.filter(User.username == username).first()
         print(user)
         if user and user.check_password(password):
             login_user(user)
