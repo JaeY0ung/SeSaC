@@ -8,3 +8,5 @@ __pycache__
 .json
 
 instance/
+
+utils.py

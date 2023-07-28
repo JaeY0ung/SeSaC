@@ -1,45 +1,38 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <title>Title</title>
-  <!-- Required meta tags -->
+  <title>상품목록</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS v5.2.1 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
+  <style>
+    a {
+      text-decoration:none;
+      color:black;
+    }
+  </style>
 </head>
 
 <body>
   <header>
-    <!-- place navbar here -->
+    
   </header>
   <main>
-    나의 장바구니
-    <table border="1">
-        <tr>
-            <td>물품명</td>
-            <td>개수</td>
-            <td>가격</td>
-        </tr>
-        {% for item_code, item_info in cart.items() %}
-            <tr>
-                <td>{{ item_info['name'] }}</td>
-                <td>{{ item_info['count'] }}</td>
-                <td>{{ item_info['sum'] }}</td>
-                <td><a href="{{ url_for('remove_item_from_cart', item_code = item_code) }}">X</a></td>
-            </tr>
+    <h1>item list</h1>
+    <ul>
+        {% for item_code, item_info in items.items() %}
+            <li>
+                상품명: {{ item_info.name }} 가격: {{ item_info.price }}
+                <a href="{{ url_for('add_to_cart', cart_item_code = item_code) }}" >상품에 담기</a>
+            </li>
         {% endfor %}
-    </table>
-    총 가격: {{  total  }}
+        <a href="/view_cart">장바구니로 이동</a>
+    </ul>
   </main>
   <footer>
-    <!-- place footer here -->
+
   </footer>
-  <!-- Bootstrap JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
     integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
   </script>
