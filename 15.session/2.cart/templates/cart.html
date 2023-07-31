@@ -18,23 +18,35 @@
     <!-- place navbar here -->
   </header>
   <main>
-    나의 장바구니
-    <table border="1">
-        <tr>
-            <td>물품명</td>
-            <td>개수</td>
-            <td>가격</td>
-        </tr>
-        {% for cart_item_code, cart_item_info in cart.items() %}
-            <tr>
-                <td>{{ cart_item_info['name'] }}</td>
-                <td>{{ cart_item_info['count'] }}</td>
-                <td>{{ cart_item_info['sum'] }}</td>
-                <td><a href="{{ url_for('remove_item_from_cart', cart_item_code = cart_item_code) }}">X</a></td>
-            </tr>
-        {% endfor %}
-    </table>
-    총 가격: {{  total  }}
+    <div class="d-flex justify-content-center">
+      나의 장바구니
+    </div>
+    <div class="d-flex justify-content-center">
+      <table border="1">
+          <tr>
+              <td>물품명</td>
+              <td>개수</td>
+              <td>가격</td>
+          </tr>
+          {% for cart_item_code, cart_item_info in cart.items() %}
+              <tr>
+                  <td>{{ cart_item_info['name'] }}</td>
+                  <td>{{ cart_item_info['count'] }}</td>
+                  <td>{{ cart_item_info['sum'] }}</td>
+                  <td><a href="{{ url_for('remove_item_from_car.remove_item_from_cart', cart_item_code = cart_item_code) }}">X</a></td>
+              </tr>
+          {% endfor %}
+      </table>
+    </div>
+    <div class="d-flex justify-content-center">
+      총 가격: {{  total  }}
+    </div>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button">Button</button>
+      </div>
+    </div>
   </main>
   <footer>
     <!-- place footer here -->

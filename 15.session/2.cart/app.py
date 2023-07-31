@@ -1,8 +1,11 @@
 from flask import Flask, render_template, session, redirect, url_for
 import utils
+from views import remove_item_from_cart
 
 app = Flask(__name__)
 app.secret_key = utils.SECRET_KEY
+app.register_blueprint(remove_item_from_cart.bp)
+
 items = utils.items
 
 @app.route('/')
@@ -49,17 +52,17 @@ def view_cart():
     cart = session["cart"]
     return render_template("cart.html", cart=cart, items=items, total=total)
 
-#? 장바구니에서 물건 제거
-@app.route('/remove_item_from_cart/<cart_item_code>')
-def remove_item_from_cart(cart_item_code):
-    session['cart'].pop(cart_item_code)
+# #? 장바구니에서 물건 제거
+# @app.route('/remove_item_from_cart/<cart_item_code>')
+# def remove_item_from_cart(cart_item_code):
+#     session['cart'].pop(cart_item_code)
 
-    #? 세션 데이터가 수정되었음을 Flask-> Client 브라우저에게 알림
-    session.modified = True
+#     #? 세션 데이터가 수정되었음을 Flask-> Client 브라우저에게 알림
+#     session.modified = True
     
-    print("장바구니 물건 제거")
+#     print("장바구니 물건 제거")
 
-    return redirect(url_for('view_cart'))
+#     return redirect(url_for('view_cart'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=8090)
