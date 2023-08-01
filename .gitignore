@@ -3,7 +3,7 @@ __pycache__
 
 .DS_Store
 .vscode
-.db
+# .db
 
 .json
 
@@ -11,4 +11,4 @@ instance/
 
 utils.py
 
-migrations/
+# migrations/

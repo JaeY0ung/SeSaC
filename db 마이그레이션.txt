@@ -1,0 +1,52 @@
+1. 백업
+2. 수동으로 작업
+2-1. Transaction 시작 (일관성/무결성/동시성 보장을 필요로 함)
+2-2. 중간 작업 수행
+2-3. If 성공: Transaction 커밋/ 정료
+2-4. If 실패: Transaction 롤백/종료
+
+1. 이메일 추가 예시
+unique = True -> False
+
+2.추가할 때 (upgrade)
+컬럼 추가
+
+3.롤백할 때 (downgrade)
+---------------------------
+1. 패스워드 암호화 예시
+추가할 때
+2-1. password_hash 칼럼 추가
+2-2. password 컬럼 삭제 <-- 유지
+
+
+CREATE TABLE 'user'
+(id INTEGER NOT NULL,
+useername VARACHAR(80) NOT NULL,
+password VARCHAR(80) NOT NULL,
+email VARCHAR(80),
+UNIQUE(username)
+);
+
+ALTER TABLE user ADD COLUMN email VARCHAR(120);
+----------------------------------------------
+from sqlalchemy.orm import Session
+from app import User
+from werkzeug.
+
+# DB 연결
+bind = op.get_bind()
+session = Session(bind=bind)
+
+# 데이터 가져오기
+users = session.query(User).all()
+
+# 데이터 변환 과정
+for user in users:
+    user.password_hash = password
+    print(f'{user}, {user.username}, {user.password} -> {user.password_hash}')
+
+session.commit()
+session.close()
+
+with op.batch_alter_table('user', schema=None) as batch_op:
+    batch_op.alter_column('password_hash, nullable=False)
