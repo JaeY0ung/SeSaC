@@ -30,8 +30,16 @@ python manage.py makemigrations
 python manage.py migrate
 
 
-ERD ORM
+insert into helloapp_todo(title, content) values("새싹 프로젝트", "회의하기");
 
+ERD ORM
+======================================
 python manage.py shell
 new_message = Message(text="안녕하세요")
 new_message.save()
+======================================
+from helloapp.models import Todo
+new_todo = Todo(title='새싹 프로젝트', content='회의하기')
+new_todo = Todo(title='개인 프로젝트', content='크롤링하기')
+new_todo = Todo(title='학교 수강신청하기', content='')
+new_todo.save()

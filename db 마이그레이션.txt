@@ -13,6 +13,11 @@ unique = True -> False
 
 3.롤백할 때 (downgrade)
 ---------------------------
+
+python manage.py makemigrations
+python manage.py migrate
+
+---------------------------
 1. 패스워드 암호화 예시
 추가할 때
 2-1. password_hash 칼럼 추가
@@ -26,7 +31,6 @@ password VARCHAR(80) NOT NULL,
 email VARCHAR(80),
 UNIQUE(username)
 );
-
 ALTER TABLE user ADD COLUMN email VARCHAR(120);
 ----------------------------------------------
 from sqlalchemy.orm import Session
