@@ -1,0 +1,37 @@
+< 터미널 >
+django-admin = python manage.py
+
+django-admin startproject HelloWorld2
+
+python manage.py startapp helloapp
+
+
+==========================================
+
+
+< 장고 앱 만드는 방법 >
+1. 프로젝트 생성
+2. 앱 생성
+3. 프로젝트 설정파일(settings.py)을 변경한다.
+3-1. Installed_APPS 에 2번에서 만든 앱을 추가한다.
+4. 필요한 앱 개발
+4-1. URL 설계 (local url - urls.py 생성)
+4-2. view 개발 (비즈 로지=BE개발) (app.py or view.py)
+4-3. template 개발 (FE 개발)
+4-4. model 개발 (DB 개발)(models.py) 
+5. 메인프로젝트와 앱을 연결한다.
+6. 배포/운영할 셋업을 한다.
+7. DEBUG모드를 끈다.
+
+python manage.py runserver
+
+# DB 클래스 생성 변경 이후
+python manage.py makemigrations
+python manage.py migrate
+
+
+ERD ORM
+
+python manage.py shell
+new_message = Message(text="안녕하세요")
+new_message.save()
