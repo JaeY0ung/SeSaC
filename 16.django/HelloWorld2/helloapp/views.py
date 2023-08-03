@@ -4,6 +4,7 @@ from .models import Message, Todo
 
 # Create your views here.
 from django.http import HttpResponse
+from datetime import datetime
 
 def hello_world(request):
     return HttpResponse("Hello World")
@@ -12,6 +13,8 @@ def show_message(request):
     # DB로 부터 메세지 받아오기 (ORM 사용)
     messages = Message.objects.all()
     return render(request, 'message_list.html', {'messages': messages})
+
+
 
 def show_todo_title(request):
     todos = Todo.objects.all()
@@ -29,9 +32,7 @@ def edit_todo_content(request, show_id):
         todo = Todo.objects.get(id = show_id)
         todo.content = new_content
         todo.save()
-        # print(f'수정완료: <{todo}> {todo.id}, {todo.content}')
-    return render(request, 'todo_content.html', {'todo': todo})
-    # return redirect('show_todo_content')
+    return redirect('show_todo_content', id = show_id)
 
 def delete_todo(request, delete_id):
     print(f'delete_id: {delete_id}')
@@ -42,6 +43,9 @@ def delete_todo(request, delete_id):
 def add_todo(request):
     if request.method =='POST':
         new_title = request.POST['new_title']
-        new_todo = Todo(title=f'{new_title}', content='')
+        if new_title:
+            new_todo = Todo(title=f'{new_title}', content='')
+        else:
+            new_todo = Todo(title=f"{datetime.now().strftime('%Y-%m-%d')} 메모", content='')
         new_todo.save()
     return redirect('/todos')

@@ -14,13 +14,22 @@
 </head>
 
 <body>
-  <h1>Content</h1>
-  <form action="/todos/{{ todo.id }}/content/edit" method="POST">
+	<div class="d-flex justify-content-center mb-3 mt-3">
+  	<h3>TODO : {{ todo.title }}</h3>
+	</div>
+  <form action="{ url 'edit_todo_content' todo.pk }" method="POST">
 		{% csrf_token %}
-		<textarea name="content" cols="30" rows="10" value>{{ todo.content }}</textarea>
-    <input type="submit" value="수정">
+		<div class="d-flex justify-content-center mb-3">
+			<textarea name="content" cols="30" rows="10">{{ todo.content }}</textarea>
+		</div>
+		<div class="d-flex justify-content-center mb-3">
+    	<input type="submit" value="수정">
+		</div>
+		<div class="d-flex justify-content-center mb-3">
+			<a href="{% url 'show_todo_title' %}">뒤로 가기</a>
+		</div>
 	</form>
-	<a href="/todos/">뒤로 가기</a>
+
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
     integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
   </script>
