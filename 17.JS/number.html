@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous" defer>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+      integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous" defer>
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <h1>숫자</h1>
+    <div id="num">0</div>
+    <button id="plus">증가</button>
+  </body>
+  <script>
+    var num = 1;
+    document.addEventListener('DOMContentLoaded', function(){
+      document.querySelector('#num').innerHTML = num;
+    })
+    // num이라는 placeholder에 변수값 출력
+    // document.querySelector('#num').innerHTML = num;
+    // plus라는 버튼을 눌렀을 때 queryselector 우리가 로컬에 있는 변수를 증가하기 (addeventListner)
+    document.querySelector('#plus').addEventListener('click', function(){
+      num++;
+      console.log(num);
+      document.querySelector('#num').innerHTML = num;
+    });
+  </script>
+</html>
