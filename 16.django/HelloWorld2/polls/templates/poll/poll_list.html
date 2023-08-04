@@ -1,0 +1,14 @@
+{% include 'poll/layout.html' %}
+
+{% block content %}
+	<div class="d-flex justify-content-center">
+		<h1>투표 목록</h1>
+	</div>
+	<div class="d-flex justify-content-center">
+		<ul>
+			{% for question in latest_questions %}
+				<li><a href="{% url 'question_detail' question.pk %}">{{ question.question_text }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock %}

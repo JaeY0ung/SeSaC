@@ -1,0 +1,18 @@
+{% include 'poll/layout.html' %}
+
+{% block content %}
+	<div class="d-flex justify-content-center">
+		<h1>'{{ question.question_text }}' 의 투표결과!</h1>
+	</div>
+	<div class="d-flex justify-content-center">
+		<fieldset>
+			<ul>
+				{% for choice in choices %}
+					<div class="d-flex justify-content-center"></div>
+						<li>{{ choice.choice_text }} 투표수: {{ choice.votes }}</li>
+					<div class="d-flex justify-content-center"></div>
+				{% endfor %}
+			</ul>
+		</fieldset>
+	</div>
+{% endblock %}
