@@ -11,9 +11,15 @@
 <body>
   <header>
     <form method="get">
-      <select name="date_choices">
+      <select name="date_choice">
+        {% if date_choice %}
+          <option value="{{ date_choice }}" selected disabled>'{{ date_choice }}'&nbsp;일의 영화 정보</option>
+        {% else %}
+          <option value="{{ date_choices[0] }}" selected disabled>(최신 날짜) '{{ date_choices[0] }}'&nbsp;일의 영화 정보</option>
+        {% endif %}
+
         {% for date in date_choices %}
-          <option value="{{ date }}">{{ date }}</option>
+          <option value="{{ date }}">'{{ date }}'&nbsp;일의 영화 정보</option>
         {% endfor %}
       </select>
       <input type="submit" value="이동">
