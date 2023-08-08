@@ -11,4 +11,3 @@ class Todo(models.Model):
     content = models.CharField(max_length=100)
     def __str__(self) -> str:
         return f'<{self}> {self.title} {self.content}'
-

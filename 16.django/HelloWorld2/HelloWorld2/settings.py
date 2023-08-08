@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "helloapp",
     "todo",
+    "photo_upload",
+    "polls",
 ]
 
 MIDDLEWARE = [

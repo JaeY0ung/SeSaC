@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo List</title>
+</head>
+<body>
+    {% for photo in photos %}
+    <img src="{{ photo.image.url }}" alt="{{ photo.title }}">
+    <p>{{ photo.title }}</p>
+    {% endfor %}
+</body>
+</html>
