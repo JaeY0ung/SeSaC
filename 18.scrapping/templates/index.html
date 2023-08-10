@@ -7,6 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <style>
+    .hover-effect {
+    background-color: #eee;
+    transition: background-color 0.3s ease;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -24,26 +31,30 @@
       </select>
       <input type="submit" value="이동">
     </form>
+    <div class="container">
+      <div class="hover-effect" id="hoverDiv">
+        마우스를 올려보세요!
+      </div>
+    </div>
   </header>
   <main>
-    <table class="table table-info table-striped table-bordered">
-      <tr>
-        {% for result in results[0].keys() %}
-          <td>{{ result }}</td>
-        {% endfor %}
-      </tr>
+    <div class="d-flex flex-wrap">
       {% for result in results %}
-        <tr>
-          <td>{{ result['title'] }}</td>
-          <td><a href="{{ result['poster_url'] }}">포스터 보러가기</a></td>
-          <td>{{ result['short_description'] }}</td>
-          <td>{{ result['rank'] }}</td>
-          <td>{{ result['rating'] }}</td>
-          <td>{{ result['reservation_rate'] }}</td>
-          <td>{{ result['daily_ranking_created_on'] }}</td>
-        </tr>
+        <div class="card text-bg-dark container text-center mb-3 hover-effect" style="width: 15rem;">
+          <img style="width: 9rem;" src="{{ result['poster_img'] }}" class="card-img-top container text-center" alt="{{ result['poster_img'] }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ result['rank'] }}. {{ result['title'] }}</h5>
+            <p class="card-text">별점: {{ result['rating'] }} &nbsp; 예매율: {{ result['reservation_rate'] }}</p>
+            <div class="mb-3" style="overflow:scroll; height:150px;">
+              <p class="card-text">한줄 소개: {{ result['short_description'] }}</p>
+            </div>
+            <a href="{{ result['poster_url'] }}" class="btn btn-primary">포스터 보러가기</a>
+            <div class="mb-3"></div>
+            <a href="https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bkEw&pkid=68&os=28565042&qvt=0&query={{ result['title'] }}%20상영일정" class="btn btn-primary">예매하러 가기</a>
+          </div>
+        </div>
       {% endfor %}
-    </table>
+    </div>
   </main>
   <footer>
   </footer>

@@ -12,3 +12,5 @@ instance/
 utils.py
 
 # migrations/
+
+secret.py

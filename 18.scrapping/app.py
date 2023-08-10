@@ -32,9 +32,9 @@ def index():
                     JOIN daily_ranking ON movie.id = daily_ranking.movie_id
                     WHERE daily_ranking.created_on = ?
                     ''',(date_choices[0],))
-
     movies = cur.fetchall()
-    # print(movies)
+    for movie in movies:
+        print(movie)
 
     results = []
     for movie in movies:
@@ -44,13 +44,14 @@ def index():
             'title' : movie[1],
             'poster_url' : movie[2],
             'short_description' : movie[3],
-            #? 'movie_created_on':movie[4],
-            #? 'daily_ranking_id' : movie[5],
-            #? 'daily_ranking_movie_id':movie[6],
-            'rank' : movie[7],
-            'rating' : movie[8],
-            'reservation_rate' : movie[9],
-            #? 'daily_ranking_created_on' : movie[10]
+            'poster_img' : movie[4],
+            #? 'movie_created_on':movie[5],
+            #? 'daily_ranking_id' : movie[6],
+            #? 'daily_ranking_movie_id':movie[7],
+            'rank' : movie[8],
+            'rating' : movie[9],
+            'reservation_rate' : movie[10],
+            #? 'daily_ranking_created_on' : movie[11]
         }
         results.append(movie_info)
         # print(movie_info)
